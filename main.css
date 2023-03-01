@@ -1,5 +1,6 @@
 :root {
 	--background-color: #141926;
+	--dark-background-color: #02050c;
 	--container-color: #373737;
 	--button-color: #2A2A2A;
 	--blue-accent: #4a4c63;
@@ -15,7 +16,6 @@
 	--video-border: 0px;
 	--video-border-color: #0000;
 	--video-rounded: 0px;
-	--color-mode: light;
 	--button-radius: 2px;
 	--myvideo-max-width: min(800px,100vw);
 	--myvideo-width:unset;
@@ -25,6 +25,14 @@
 	--advanced-mode: inline-block;
 	--background-main-image: unset;
 	--show-codirectors: inline-block;
+	--full-screen-button: inherit;
+	--color-mode: light;
+	--video-background-image-size: auto 30%;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-mode: dark;
+	}
 }
 
 * {
@@ -37,6 +45,10 @@
 ::selection {
 	background-color: #0447c888;
 	color: #FFF;
+}
+
+button:hover,[role="button"]:not(.column):hover{
+	filter: brightness(90%);
 }
 
 table {
@@ -246,7 +258,7 @@ button.red {
 
 button {
 	-webkit-app-region: no-drag;
-	padding: 7px 10px 6px 10px;
+	padding: 7px 10px 6px 6px;
 	user-select: none;
 	margin: 10px 0px;
 	cursor: pointer;
@@ -350,15 +362,41 @@ button.white:active {
 	font-size: calc(6vh + 6vw / 2);
 	letter-spacing: 0.0em;
 	text-shadow: 0.05em 0.05em 0px rgb(0 0 0);
-	width: 100%;
 	z-index: 6;
 	vertical-align: top;
-	text-align: center;
+	text-align: right;
+	right:0;
+	bottom:0;
 	position: fixed;
 	overflow-wrap: anywhere;
 	cursor: pointer;
 	user-select: none;
 }
+#overlayClockContainer.top {
+	top:0%;
+	bottom:unset;
+}
+#overlayClockContainer.vmiddle {
+	bottom:48%;
+	top:unset;
+}
+#overlayClockContainer.bottom {
+	bottom:0%;
+	top:unset;
+}
+#overlayClockContainer.left {
+	right:unset;
+	left:0;
+}
+#overlayClockContainer.hmiddle {
+	right:45%;
+	left:unset;
+}
+#overlayClockContainer.right {
+	right:0;
+	left:unset;
+}
+
 #overlayClock{
 	padding:2px 20px;
 	background-color: #0009;	
@@ -389,6 +427,31 @@ button.white:active {
 	cursor: pointer;
 	user-select: none;
 }
+#overlayClockContainer2.top {
+	top:0%;
+	bottom:unset;
+}
+#overlayClockContainer2.vmiddle {
+	bottom:48%;
+	top:unset;
+}
+#overlayClockContainer2.bottom {
+	bottom:0%;
+	top:unset;
+}
+#overlayClockContainer2.left {
+	right:unset;
+	left:0;
+}
+#overlayClockContainer2.hmiddle {
+	right:45%;
+	left:unset;
+}
+#overlayClockContainer2.right {
+	right:0;
+	left:unset;
+}
+
 #overlayClock2{
 	padding:0 5px;
 	background-color: #0009;
@@ -396,6 +459,42 @@ button.white:active {
 #overlayClock2:empty{
 	display:none;
 }
+#stickyMsgs{
+	margin:0 auto;
+	background-color: #0000;
+	color: white;
+	font-family: Cousine, monospace;
+	font-size: 6vh;
+	line-height: 8vh;
+	letter-spacing: 0.0em;
+	text-shadow: 0.05em 0.05em 0px rgba(0,0,0,1);
+	width:100%;
+	z-index: 7;
+	vertical-align: top;
+	text-align: center;
+	position: fixed;
+	overflow-wrap: anywhere;
+	padding:2% 3%;
+}.
+.avatarSelection{
+	vertical-align: top;
+    margin: 10px 0;
+	width:130px;
+	display:inline-block;
+	margin:0 1px; 
+	text-align: center;
+	cursor:pointer;
+}
+.overlayCloseBtn{
+    padding: 0;
+    margin: 10px;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    bottom: 10px;
+    background-color: #DDDD;
+}
+
 #overlayMsgs{
 	margin:0 auto;
 	background-color: #0000;
@@ -591,7 +690,9 @@ hr {
 	border: 0;
 	margin: 0;
 }
-
+#gridlayout{
+	z-index:-1;
+}
 .invite_setting_group {
 	margin: 20px 0px;
 	background-color: #d2d2d2;
@@ -942,20 +1043,26 @@ button.glyphicon-button.active.focus {
 	background-attachment: fixed;
 	background-position: center;
 	overflow-x: hidden;
+	overflow: hidden;
+    position: absolute;
+    z-index: 0;
 }
 
 
 #controlButtons {
 	position: fixed;
-	z-index: 5;
+	z-index: 995;
 	bottom: 0px;
 	width: 100%;
-	display: none;
 	justify-content: center;
 	align-items: center;
 	height: 60px;
 	border: 0;
 	pointer-events: none;
+	display: flex;
+}
+#controlButtons:empty {
+	display: none;
 }
 
 #subControlButtons {
@@ -966,6 +1073,10 @@ button.glyphicon-button.active.focus {
 	position: absolute;
 	pointer-events: auto;
 }
+#subControlButtons:empty{
+	display:none;
+}
+
 #container.vidcon {
 	height:100%;
 }
@@ -1306,6 +1417,9 @@ body {
 	transition: opacity .1s linear;
 	scrollbar-color:#666 #201c29;
 }
+body.darktheme{
+	background-color: var(--dark-background-color);
+}
 
 ::-webkit-scrollbar {
 	width: 15px;
@@ -1410,9 +1524,6 @@ select{
 	background-color:#EFEFEF;
 	padding:10px 12px 12px 8px;
 	margin: 0px 0px 0px 10px;
-}
-.advanced {
-	display: var(--advanced-mode);
 }
 
 .highlight {
@@ -2140,11 +2251,13 @@ iframe {
     text-align: right;
 }
 .director-message-box{
-	margin-top: 5px;
+    display: flex;
+    flex: 1 100%;
+    flex-wrap: wrap;
 }
 .director-message-box textarea {
 	margin: 5px;
-	width: 260px;
+	flex: 1 100%;
 	padding: 5px;
 }
 .director-message-box > button {
@@ -2264,16 +2377,38 @@ img {
 	border-radius: 4px;
 	text-align: center;
 }
+#obsState.larger {
+	padding:2px 10px;
+	font-size: 30px;
+}
+
+
+@media only screen and (max-height: 400px){
+	#obsState {
+		transform: scale(0.9);
+	}
+}
+@media only screen and (max-height: 300px){
+	#obsState {
+		transform: scale(0.8);
+	}
+}
 @media only screen and (max-width: 620px){
 	#obsState {
 		top:20px;
-		transform: scale(0.63);
+		transform: scale(0.8);
 	}
 }
+@media only screen and (max-height: 200px){
+	#obsState {
+		transform: scale(0.7);
+	}
+}
+
 @media only screen and (max-width: 400px){
 	#obsState {
 		top:30px;
-		transform: scale(0.56);
+		transform: scale(0.7);
 		display:none!important;
 		opacity:0;
 	}
@@ -2284,34 +2419,17 @@ img {
 		opacity:0;
 	}
 }
-
-@media only screen and (max-height: 400px){
-	#obsState {
-		transform: scale(0.5);
-	}
-}
-@media only screen and (max-height: 300px){
-	#obsState {
-		transform: scale(0.4);
-	}
-}
-@media only screen and (max-height: 200px){
-	#obsState {
-		transform: scale(0.3);
-	}
-}
-
 .onair {
-	border:green solid 2px !important;
+	box-shadow: inset 0 0 max(10vw, 10vh) green;
 }
 
 .ondeck {
-	border: yellow solid 2px !important;
 	display: block !important;
+	box-shadow: inset 0 0 max(10vw, 10vh) yellow;
 }
 
 .recording{
-	border: red solid 2px !important;
+	box-shadow: inset 0 0 max(10vw, 10vh) red
 }
 
 .raisedHand{
@@ -2438,7 +2556,7 @@ video {
 	-ms-user-select: none; /* IE10+ */
 	-webkit-tap-highlight-color:transparent;
 	outline-style:none;
-	background-size: auto 50px;
+	background-size: var(--video-background-image-size);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-image: var(--video-background-image);
@@ -2448,6 +2566,10 @@ video {
 
 video::-webkit-media-controls-timeline {
 	display: none;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+	display: var(--full-screen-button);
 }
 
 video::-webkit-media-controls-timeline-container {
@@ -2514,7 +2636,7 @@ audio.fileshare::-webkit-media-controls-play-button, video.fileshare::-webkit-me
 .context-menu {
 	display: none;
 	position: absolute;
-	z-index: 10 !important;
+	z-index: 996 !important;
 	padding: 12px 0 !important;
 	width: 240px !important;
 	background-color: #fff !important;
@@ -2565,7 +2687,12 @@ audio.fileshare::-webkit-media-controls-play-button, video.fileshare::-webkit-me
     position: relative;
     top: 7px;
 }
-
+#bufferSliderValue{
+	margin-left:10px;
+}
+.context-menu__link:hover > #bufferSliderValue {
+	color: #fff;
+}
 .selectedTFImage{
     box-shadow: 0 0 10px #2c3554;
     outline: 2px solid black;
@@ -3277,20 +3404,98 @@ div#roomnotes2 {
 	text-transform: lowercase;
 }
 .controlsGrid {
-	grid-template-columns: 1fr 1fr;
-	display: grid;
+    display: flex;
+    flex-wrap: wrap;
 }
 .controlsGrid button {
-	margin: 5px;
-	text-align: right;
+    margin: 5px;
+    text-align: right;
+    flex: 0 1 calc(50% - 10px);
 }
-.controlsGrid span button {
-	margin-right: 0;
-	padding-left: 3px;
-	text-align: right;
+.controlsGrid > div {
+	width: 100%;
+	display: flex;
 }
+
 .controlsGrid input {
-	margin: 5px var(--regular-margin);
+	margin: 5px;
+}
+
+button[data-action-type="messaging-box-close"] {
+	flex: 0 1 25%;
+}
+button[data-action-type="messaging-box-send"] {
+	flex: 1 0 50%
+}
+
+.controlsGrid > span.tooltip {
+    display: flex;
+    flex: 1 calc(50% - 10px);
+    align-items: center;
+}
+
+.advanced {
+	display: var(--advanced-mode);
+}
+
+#widget {
+	position: absolute;
+    width: 25%;
+    height: 100%;
+    right: 0;
+    top: 0;
+}
+#localMuteElement{
+	top: 1vh;
+	right: 1vh;
+}
+#localVoiceMeter{
+	width: 10px;
+	height: 10px;
+	top: 8px;
+	right: 10px;
+}
+.advanced {
+	display: var(--advanced-mode);
+}
+.controlCenterBox{
+	margin-top:2px;
+}
+
+.contolboxLabel {
+	float: left;
+	top: 2px;
+	margin-left: 5px;
+	position: relative;
+	cursor: pointer;
+}					
+.fullwindowButton {
+	transition: opacity 0.3s;
+	width: 4vh;
+	height: 4vh;
+	max-width: 30px;
+	max-height: 30px;
+	min-width: 15px;
+	min-height: 15px;
+	position: absolute;
+	display: none;
+	z-index: 6;
+	right: 4vh;
+	top : 4vh;
+	color: white;
+	cursor: pointer;
+}
+.fullwindowButtonimg {
+	user-select: none;
+	background-color:#0007;
+	width:4vh;
+}
+#widget {
+	position: absolute;
+    width: 25%;
+    height: 100%;
+    right: 0;
+    top: 0;
 }
 
 .pull-right {
@@ -3333,6 +3538,24 @@ i.las.la-circle {
 .vidcon>h2 {
 	font-size: 1em;
 	margin-top: 20px;
+}
+#pptbackbutton {
+	margin-left: 20;
+}
+#pptnextbutton {
+	background-color: #007900;
+}
+#pptbackbutton:active {
+	-webkit-box-shadow: inset 0px 0px 17px #4b4b4b;
+	-moz-box-shadow: inset 0px 0px 17px #4b4b4b;
+	box-shadow: inset 0px 0px 17px #4b4b4b;
+	outline: none;
+}
+#pptnextbutton:active {
+	-webkit-box-shadow: inset 0px 0px 17px #4b4b4b;
+	-moz-box-shadow: inset 0px 0px 17px #4b4b4b;
+	box-shadow: inset 0px 0px 17px #4b4b4b;
+	outline: none;
 }
 div#guestFeeds {
 	background: var(--container-color);
@@ -3784,6 +4007,23 @@ input:checked + .slider:before {
 	overflow-wrap: break-word;
 }
 
+#bufferSettings{
+	position: absolute;
+	background-color: #ddddddee;
+	box-shadow: 0 0 30px 10px #0000005c;
+	color: black;
+	font-size: 1.0em;
+	bottom: 5%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	border-radius: 10px;
+	font-weight: bold;
+	z-index:31;
+	width:550px;
+	max-width:100%;
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
 .largeTextEntry {
 	width: 90%;
 	margin: 10px 5%;
@@ -3955,6 +4195,9 @@ input:checked + .slider:before {
 	z-index: 0;
 	opacity: 0.8;
 }
+#modalBackdrop.darktheme{
+	background-color: var(--dark-background-color);
+}
 
 .modalBackdrop {
 	background: var(--background-color);
@@ -3967,6 +4210,10 @@ input:checked + .slider:before {
 	opacity: 0.8;
 }
 
+.modalBackdrop.darktheme{
+	background-color: var(--dark-background-color);
+}
+
 .opaqueBackdrop{
 	background: var(--background-color);
 	position: fixed;
@@ -3976,6 +4223,9 @@ input:checked + .slider:before {
 	bottom: 0;
 	z-index: 0;
 	opacity: 1.0;
+}
+.opaqueBackdrop.darktheme{
+	background-color: var(--dark-background-color);
 }
 
 .alertModalMessage>select{
@@ -4221,6 +4471,10 @@ input:checked + .slider:before {
 	content: "\f021"; }
 .la-circle:before {
 	content: "\f111"; }
+.la-chevron-left:before {
+	content: "\f053"; }
+.la-chevron-right:before {
+	content: "\f054"; }
 .la-binoculars:before {
 	content: "\f1e5"; }
 .la-user-cog:before {
@@ -4263,6 +4517,8 @@ input:checked + .slider:before {
 	content: "\f078"; }
 .la-music:before {
 	content: "\f001"; }
+.la-thumbtack:before {
+	content: "\f08d"; }
 .la-hdd:before {
 	content: "\f0a0"; }
 .la-signal:before {
@@ -4271,12 +4527,6 @@ input:checked + .slider:before {
 	content: "\f023"; }
 .la-lock-open:before {
 	content: "\f3c1"; }
-@media (prefers-color-scheme: dark) {
-	:root {
-		--color-mode: dark;
-		--background-color: #02050c;
-	}
-}
 
 body.darktheme {
 	color: white;
@@ -4331,6 +4581,18 @@ body.darktheme .videoMenu {
 }
 body.darktheme .audioMenu{
 	background-color: #414141;
+}
+body.darktheme #avatarDiv{
+	background-color: #414141;
+}
+body.darktheme .selected {
+	border: solid 3px #f8f7f7;
+}
+body.darktheme #selectAvatarImage label {
+	color: #f8f7f7;
+}
+body.darktheme .avatarLabel {
+	color: #f8f7f7;		  
 }
 body.darktheme #headphonesDiv{
 	background-color: #414141;

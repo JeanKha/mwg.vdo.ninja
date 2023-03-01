@@ -368,7 +368,7 @@
     "enter-the-website-URL-you-wish-to-share": "Enter the URL website you wish to share.",
     "run-a-speed-test": "Run a Speed Test",
     "read-the-guides": "Browse the Guides",
-    "info-blob": "",
+    "info-blob": "\n<h2>What is VDO.Ninja</h2>\n<br>\n<li>100% <b>free</b>; no downloads; no personal data collection; no sign-in</li>\n<li>Bring live video from your smartphone, remote computer, or friends directly into OBS or other studio software.</li>\n<li>We use cutting edge Peer-to-Peer forwarding technology that offers privacy and ultra-low latency</li>\n<br>\n<li>Youtube video \n<i class=\"lab la-youtube\"></i>\n<a href=\"https://www.youtube.com/watch?v=QaA_6aOP9z8&amp;list=PLWodc2tCfAH1WHjl4WAOOoRSscJ8CHACe&amp;index=1\" alt=\"Youtube video demoing VDO.Ninja\">Demoing it here</a>\n</li>\n<br><h3>\n   🛠 For support, see the <a href=\"https://www.reddit.com/r/VDONinja/\">sub-reddit <i class=\"lab la-reddit-alien\"></i></a> or join the <a href=\"https://discord.vdo.ninja/\">Discord <i class=\"lab la-discord\"></i></a>. The <a href=\"https://docs.vdo.ninja/\">documentation is here</a> and my personal email is <i>steve@seguin.email</i>\n</h3> \n\n",
     "animate-mixing": "Animate mixing",
     "prefix-screenshare": "Prefix screenshare IDs",
     "more-than-four-can-join": "These four guest slots are just for demonstration. More than four guests can actually join a room.",
@@ -532,7 +532,7 @@
     "no-screen-share-supported": "Sorry, your browser does not support screen-sharing.\n\nPlease use the desktop versions of Firefox or Chrome instead.",
     "speech-not-suppoted": "⚠ Speech Recognition is not supported by this browser",
     "blue-yeti-tip": "<i>Tip:</i> Blue Yeti microphones may experience issues being overly loud. <a href='https://support.google.com/chrome/thread/7542181?hl=en&msgid=79691143'>Please see here</a> for a solution or disable auto-gain.",
-    "site-not-responsive": "<h3>Notice: The system cannot be accessed or is currently slow to respond.</h3>\n\nContact steve@seguin.email for added help.\n\nThis service requires the use of Websockets over port 443.",
+    "site-not-responsive": "<h3>Notice: The system cannot be accessed or is currently slow to respond.</h3>\n\nCheck your connection or contact support.\n\nThis service requires the use of Websockets over port 443.",
     "no-audio-source-detected": "Notice: No Audio Source was detected"
   }
 }
