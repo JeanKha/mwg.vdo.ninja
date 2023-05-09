@@ -28,13 +28,13 @@
 		<meta name="license" content="https://github.com/steveseguin/vdo.ninja/LICENSE.md" />
 		<meta name="sourcecode" content="https://github.com/steveseguin/vdo.ninja" />
 		<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
-		<link rel="icon" type="image/png" sizes="32x32" href="./media/favicon-32x32.png" />
-		<link rel="icon" type="image/png" sizes="16x16" href="./media/favicon-16x16.png" />
-		<link rel="icon" href="./media/favicon.ico" />
-		<link itemprop="thumbnailUrl" href="./media/vdoNinja_logo_full.png" />
+		<link id="favicon1" rel="icon" type="image/png" sizes="32x32" href="./media/favicon-32x32.png" />
+		<link id="favicon2" rel="icon" type="image/png" sizes="16x16" href="./media/favicon-16x16.png" />
+		<link id="favicon3" rel="icon" href="./media/favicon.ico" />
+		<link id="thumbnailUrl" itemprop="thumbnailUrl" href="./media/vdoNinja_logo_full.png" />
 		<!-- Primary Meta Tags -->
 		<title>VDO.Ninja</title>
-		<meta name="title" content="VDO.Ninja" />
+		<meta id="metaTitle" name="title" content="VDO.Ninja" />
 		<meta name="description" content="Bring live video from your smartphone, computer, or friends directly into your Studio. 100% free." />
 		<meta name="author" content="Steve Seguin" />
 		<!-- Open Graph / Facebook -->
@@ -56,7 +56,7 @@
 		<meta property="twitter:image" content="./media/vdoNinja_logo_full.png" />
 		<meta name="msapplication-TileColor" content="#da532c" />
 		<meta name="theme-color" content="#ffffff" />
-		<link rel="stylesheet" href="./main.css?ver=265" />
+		<link rel="stylesheet" href="./main.css?ver=332" />
 		<script type="text/javascript" crossorigin="anonymous" src="./thirdparty/adapter.js"></script>
 		<style id="lightbox-animations" type="text/css"></style>
 		<!-- <link rel="manifest" href="manifest.json" /> -->
@@ -81,9 +81,9 @@
 			<link itemprop="url" href="./media/vdoNinja_logo_full.png" />
 		</span>
 		
-		<script type="text/javascript" crossorigin="anonymous"  src="./thirdparty/CodecsHandler.js?ver=45"></script>
+		<script type="text/javascript" crossorigin="anonymous"  src="./thirdparty/CodecsHandler.js?ver=47"></script>
 		<script type="text/javascript" crossorigin="anonymous" src="./thirdparty/aes.js"></script>
-		<script type="text/javascript" crossorigin="anonymous" src="./webrtc.js?ver=579"></script>
+		<script type="text/javascript" crossorigin="anonymous" src="./webrtc.js?ver=640"></script>
 		<input id="zoomSlider" type="range" style="display: none;" />
 		<span id="electronDragZone" style="pointer-events: none; z-index:-10; position:absolute;top:0;left:0;width:100%;height:2%;-webkit-app-region: drag;min-height:20px;"></span>
 		<div id="header">
@@ -130,126 +130,142 @@
 			</div>
 			<div id="head6" class="hidden" data-translate="only-director-can-hear-you">Only the director can hear you currently.</div>
 			<div id="head7" class="hidden" data-translate="director-muted-you">The director has muted you.</div>
-			
+			<div id="head8" class="hidden" data-translate="director-video-muted-you">The director has disabled your camera temporarily.</div>
 		</div>
 		<div id="controlButtons" class="hidden">
-			<div id="obsState" class="hidden" >ACTIVE</div>
-			<div id="subControlButtons">
-			
-				<div id="blindAllGuests" title="Blind all guests in room (toggle)" alt="Blind all guests in room (toggle)" aria-label="Blind all guests in room" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="blindAllGuests(this, event)"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
-					<i class="toggleSize las la-eye my-float"></i>
-				</div>
-			
-				<div id="queuebutton" title="Load the next guest in queue" alt="Load the next guest in queue"  aria-label="Load next guest in queue" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="nextQueue()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
-					<i id="queuetoggle" class="toggleSize las la-stream my-float"></i>
-					<div id="queueNotification"></div>
-				</div>
-				
-				<div id="sharefilebutton" title="Transfer any file to the group" alt="Transfer any file to the group" aria-label="Select file to transfer" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleFileshare()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float" style="cursor: pointer;" >
-					<i id="filesharetoggle" class="toggleSize las la-file-upload my-float"></i> 
-					<div id="transferNotification"></div>
-				</div>
-				
-				<div id="chatbutton" title="Toggle the Chat" alt="Toggle the Chat" aria-label="Text chat" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleChat()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
-					<i id="chattoggle" class="toggleSize las la-comment-alt my-float"></i>
-					<div id="chatNotification"></div>
-				</div>
-				<div id="mutespeakerbutton" onmousedown="event.preventDefault(); event.stopPropagation();" alt="Toggle the speaker output." aria-label="Mute Speaker output" title="Mute the Speaker" onclick="toggleSpeakerMute()"  tabindex="17" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
-					<i id="mutespeakertoggle" class="toggleSize las la-volume-up my-float" style="position: relative; top: 0.5px;"></i>
-				</div>
-				<div id="mutebutton" onmousedown="toggleMute(false, event);event.preventDefault(); event.stopPropagation();"  alt="Mute the Mic" aria-label="Mute Microphone" title="Mute the Mic" ontouchstart="toggleMute(false, event);event.preventDefault(); event.stopPropagation();" tabindex="18" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;">
-					<i id="mutetoggle" class="toggleSize las la-microphone my-float" style="position: relative; top: 0.5px;"></i>
-				</div>
-				<div id="mutevideobutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Disable the Camera" alt="Disable the Camera" aria-label="Mute Camera" onclick="toggleVideoMute()"   tabindex="19" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;">
-					<i id="mutevideotoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-video my-float"></i>
-				</div>
-				<div id="screensharebutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a Screen with others" alt="Share a Screen with others" aria-label="Share a screen" onclick="screenshareTypeDecider(1)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share" style="cursor: pointer;">
-					<i id="screensharetoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-desktop my-float"></i>
-				</div>
-				<div id="screenshare2button" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Add a Screen Share" alt="Add a Screen Share" aria-label="Share a screen"  onclick="screenshareTypeDecider(2)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share"  style="cursor: pointer;">
-					<i id="screenshare2toggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las  la-tv my-float"></i>
-				</div>
-				<div id="screenshare3button" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a Screen with others" alt="Add a Screen Share" aria-label="Share a screen"  onclick="screenshareTypeDecider(3)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share"  style="cursor: pointer;">
-					<i id="screenshare3toggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las  la-tv my-float"></i>
-				</div>
-				<div id="websitesharebutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a website with your guests (IFRAME)" aria-label="Share a website" alt="Share a website with your guests (IFRAME)" onclick="shareWebsite(false, event)" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
-					<i id="websitesharetoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-window-maximize my-float"></i>
-				</div>
-				<div id="websitesharebutton2" onmousedown="event.preventDefault(); event.stopPropagation();" title="Hold CTRL (or CMD) and click to spotlight this video" alt="Share a website as an embedded iFRAME" aria-label="Share a website" onclick="shareWebsite(false, event)" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" class="float2 orange shake hidden" style="cursor: pointer;max-width: 200px;margin: auto;padding: 0 10px;">
-					<i onmousedown="event.preventDefault(); event.stopPropagation();" class="toggleSize las my-float la-window-close" style="display: inline-block;"></i>
-					<div style="display: inline-block;width: 85px;line-height: 1; font-size: 0.9em;">
-						Stop Sharing Website
-					</div>
-				</div>
-				<div id="fullscreenPage" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Full-screen the page" alt="Full-screen the page" aria-label="Full screen"  onclick="fullscreenPageToggle()" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
-					<i id="fullscreenPageToggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-expand-arrows-alt my-float"></i>
-				</div>
-				<div id="flipcamerabutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Cycle the Cameras"  onclick="cycleCameras()" class="hidden float"  tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="Cycle Cameras" alt="Cycle the Cameras">
-					<i id="settingstoggle" class="toggleSize las la-sync-alt my-float"></i> 
-				</div>
-				
-				<div id="obscontrolbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="OBS Remote Controller; start/stop and change scenes." onclick="toggleOBSControls();" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="Remote OBS control menu" alt="Toggle the Remote OBS Controls Menu">
-					<i id="obscontroltoggle" class="toggleSize las la-gamepad my-float"></i>
-				</div>
-				
-				<div id="roomsettingsbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Room Settings" onclick="toggleRoomSettings();" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" alt="Toggle the Room Settings Menu" aria-label="Room settings menu">
-					<i id="roomsettingstoggle" class="toggleSize las la-users-cog my-float"></i>
-				</div>
-				
-				<div id="settingsbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Your audio and video Settings"  onclick="toggleSettings()" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" alt="Toggle Settings Menu" aria-label="Settings menu">
-					<i id="settingstoggle" class="toggleSize las la-cog my-float"></i>
-				</div>
-				
-				<div id="hangupbutton"  onmousedown="event.preventDefault(); event.stopPropagation();" title="Hangup the Call" aria-label="Hang up" alt="Hangup the Call" onclick="hangup()" class="hidden float"  tabindex="23" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" >
-					<i class="toggleSize my-float las la-phone rotate225" aria-hidden="true"></i>
-				</div>
-				<div id="raisehandbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-raised="0" title="Alert the host you want to speak"  aria-label="Raise hand" alt="Alert the host you want to speak" tabindex="24" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="raisehand()" class="hidden float" style="cursor: pointer;">
-					<i class="toggleSize my-float las la-hand-paper" style="position: relative; right: 1px;" aria-hidden="true"></i>
-				</div>
-				
-				<div id="pptbackbutton" onmousedown="event.preventDefault(); event.stopPropagation();" title="Go back a slide" aria-label="Back a slide" alt="Go back a slide" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="gobackSlide()" class="hidden float red" style="cursor: pointer;">
-					<i class="toggleSize my-float las la-chevron-left" style="position: relative; right: 1px;" aria-hidden="true"></i>
-				</div>
-				<div id="pptnextbutton" onmousedown="event.preventDefault(); event.stopPropagation();" title="Next slide" aria-label="Next slide" alt="Next slide" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="nextSlide()" class="hidden float" style="cursor: pointer;">
-					<i class="toggleSize my-float las la-chevron-right" style="position: relative; right: 1px;" aria-hidden="true"></i>
-				</div>
-				
-				<div id="recordLocalbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-state="0" title="Record your stream to disk" aria-label="Record your stream to disk" alt="Record your stream to disk" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="recordLocalVideoToggle();" class="hidden float" style="cursor: pointer;">
-					<i class="toggleSize my-float las la-dot-circle" style="position: relative;" aria-hidden="true"></i>
-				</div>
-				<div id="recordLocalScreenbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-state="0" title="Stop screen share recording" aria-label="Stop screen share recording" alt="Stop screen recording" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="recordLocalScreenStopRecord();" class="hidden float" style="cursor: pointer;">
-					<small>Stop<br>Screen<br>Record</small>
-				</div>
-				<span id="miniPerformer" style="pointer-events: auto;" class="hidden"></span>
-				<span id="rooms" class="hidden" style="padding-top:3px;padding-left:6px;pointer-events: auto;color:#fff;"></span>
-				<span id="groups" class="hidden" style="padding-top:3px;padding-left:6px;pointer-events: auto;color:#fff;text-align: center;"></span>
-				<div id="hangupbutton2" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Cancel the Director's Video/Audio"  onclick="hangup2()" class="hidden float"  tabindex="26" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="stop publishing audio and video" alt="Disconnect Direcotor's cam">
-					<i class="toggleSize my-float las la-phone rotate225" aria-hidden="true"></i>
-				</div>
-			</div>
+            <div class="controlPositioning">
+                <div id="obsState" class="hidden" >ACTIVE</div>
+                <div id="chatModule" class="hidden">
+                    <a target="popup" id="popOutChat" onclick="createPopoutChat();"><i class="las la-external-link-alt"></i></a>
+                    <div id="chatBody"> 
+                        <div class="inMessage" id="welcomeMsg" data-translate='welcome-to-vdo-ninja-chat'>
+                            Welcome to the chat! You can send text messages directly to connected peers from here.
+                        </div>
+                    </div>
+                    <input type="text" id="chatInput" placeholder="Enter chat message to send here" onkeypress="EnterButtonChat(event)" />
+                    <button class="chatBarInputButton" onclick="sendChatMessage()" data-translate='send-chat'>Send</button>
+                </div>
+                <div id="subControlButtons">
+                
+                    <div id="blindAllGuests" title="Blind all guests in room (toggle)" alt="Blind all guests in room (toggle)" aria-label="Blind all guests in room" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="blindAllGuests(this, event)"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
+                        <i class="toggleSize las la-eye"></i>
+                    </div>
+                
+                    <div id="queuebutton" title="Load the next guest in queue" alt="Load the next guest in queue"  aria-label="Load next guest in queue" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="nextQueue()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
+                        <i id="queuetoggle" class="toggleSize las la-stream"></i>
+                        <div id="queueNotification"></div>
+                    </div>
+                    <div id="sharefilebutton" title="Transfer any file to the group" alt="Transfer any file to the group" aria-label="Select file to transfer" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleFileshare()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;display:none!important;" >
+                        <i id="filesharetoggle" class="toggleSize las la-file-upload"></i> 
+                        <div id="transferNotification"></div>
+                    </div>
+                    <div id="chatbutton" title="Toggle the Chat" alt="Toggle the Chat" aria-label="Text chat" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleChat()"  tabindex="16" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
+                        <i id="chattoggle" class="toggleSize las la-comment-alt"></i>
+                        <div id="chatNotification"></div>
+                    </div>
+                    <div id="mutespeakerbutton" onmousedown="event.preventDefault(); event.stopPropagation();" alt="Toggle the speaker output." aria-label="Mute Speaker output" title="Mute the Speaker" onclick="toggleSpeakerMute()"  tabindex="17" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
+                        <i id="mutespeakertoggle" class="toggleSize las la-volume-up" style="position: relative; top: 0.5px;"></i>
+                    </div>
+                    <div id="mutebutton" onmousedown="toggleMute(false, event);event.preventDefault(); event.stopPropagation();"  alt="Mute the Mic" aria-label="Mute Microphone" title="Mute the Mic" ontouchstart="toggleMute(false, event);event.preventDefault(); event.stopPropagation();" tabindex="18" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;">
+                        <i id="mutetoggle" class="toggleSize las la-microphone" style="position: relative; top: 0.5px;"></i>
+                    </div>
+                    <div id="mutevideobutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Disable the Camera" alt="Disable the Camera" aria-label="Mute Camera" onclick="toggleVideoMute()"   tabindex="19" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;">
+                        <i id="mutevideotoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-video"></i>
+                    </div>
+                    <div id="screensharebutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a Screen with others" alt="Share a Screen with others" aria-label="Share a screen" onclick="screenshareTypeDecider(1)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share" style="cursor: pointer;">
+                        <i id="screensharetoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-desktop"></i>
+                    </div>
+                    <div id="screenshare2button" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Add a Screen Share" alt="Add a Screen Share" aria-label="Share a screen"  onclick="screenshareTypeDecider(2)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share"  style="cursor: pointer;">
+                        <i id="screenshare2toggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las  la-tv"></i>
+                    </div>
+                    <div id="screenshare3button" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a Screen with others" alt="Add a Screen Share" aria-label="Share a screen"  onclick="screenshareTypeDecider(3)" tabindex="20" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden task" data-menu="context-menu-screen-share"  style="cursor: pointer;">
+                        <i id="screenshare3toggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las  la-tv"></i>
+                    </div>
+                    <div id="websitesharebutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Share a website with your guests (IFRAME)" aria-label="Share a website" alt="Share a website with your guests (IFRAME)" onclick="shareWebsite(false, event)" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
+                        <i id="websitesharetoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-window-maximize"></i>
+                    </div>
+                    <div id="websitesharebutton2" onmousedown="event.preventDefault(); event.stopPropagation();" title="Hold CTRL (or CMD) and click to spotlight this video" alt="Share a website as an embedded iFRAME" aria-label="Share a website" onclick="shareWebsite(false, event)" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" class="float2 orange shake hidden" style="cursor: pointer;max-width: 200px;margin: auto;padding: 0 10px;">
+                        <i onmousedown="event.preventDefault(); event.stopPropagation();" class="toggleSize las la-window-close" style="display: inline-block;"></i>
+                        <div style="display: inline-block;width: 85px;line-height: 1; font-size: 0.9em;">
+                            Stop Sharing Website
+                        </div>
+                    </div>
+                    <div id="fullscreenPage" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Full-screen the page" alt="Full-screen the page" aria-label="Full screen"  onclick="fullscreenPageToggle()" tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
+                        <i id="fullscreenPageToggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-expand-arrows-alt"></i>
+                    </div>
+                    <div id="flipcamerabutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Cycle the Cameras"  onclick="cycleCameras()" class="hidden float"  tabindex="21" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="Cycle Cameras" alt="Cycle the Cameras">
+                        <i id="settingstoggle" class="toggleSize las la-sync-alt"></i> 
+                    </div>
+                    
+                    <div id="obscontrolbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="OBS Remote Controller; start/stop and change scenes." onclick="toggleOBSControls();" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="Remote OBS control menu" alt="Toggle the Remote OBS Controls Menu">
+                        <i id="obscontroltoggle" class="toggleSize las la-gamepad"></i>
+                    </div>
+                    
+                    <div id="roomsettingsbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Room Settings" onclick="toggleRoomSettings();" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" alt="Toggle the Room Settings Menu" aria-label="Room settings menu">
+                        <i id="roomsettingstoggle" class="toggleSize las la-users-cog"></i>
+                    </div>
+                    
+                    <div id="settingsbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Your audio and video Settings"  onclick="toggleSettings()" class="hidden float"  tabindex="22" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" alt="Toggle Settings Menu" aria-label="Settings menu">
+                        <i id="settingstoggle" class="toggleSize las la-cog"></i>
+                    </div>
+                    
+                    <div id="hangupbutton"  onmousedown="event.preventDefault(); event.stopPropagation();" title="Hangup the Call" aria-label="Hang up" alt="Hangup the Call" onclick="hangup()" class="hidden float"  tabindex="23" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" >
+                        <i class="toggleSize las la-phone rotate225" aria-hidden="true"></i>
+                    </div>
+                    <div id="raisehandbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-raised="0" title="Alert the host you want to speak"  aria-label="Raise hand" alt="Alert the host you want to speak" tabindex="24" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="raisehand()" class="hidden float" style="cursor: pointer;">
+                        <i class="toggleSize las la-hand-paper" style="position: relative; right: 1px;" aria-hidden="true"></i>
+                    </div>
+                    
+                    <div id="pptbackbutton" onmousedown="event.preventDefault(); event.stopPropagation();" title="Go back a slide" aria-label="Back a slide" alt="Go back a slide" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="gobackSlide()" class="hidden float red" style="cursor: pointer;">
+                        <i class="toggleSize las la-chevron-left" style="position: relative; right: 1px;" aria-hidden="true"></i>
+                    </div>
+                    <div id="pptnextbutton" onmousedown="event.preventDefault(); event.stopPropagation();" title="Next slide" aria-label="Next slide" alt="Next slide" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="nextSlide()" class="hidden float" style="cursor: pointer;">
+                        <i class="toggleSize las la-chevron-right" style="position: relative; right: 1px;" aria-hidden="true"></i>
+                    </div>
+                    
+                    <div id="recordLocalbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-state="0" title="Record your stream to disk" aria-label="Record your stream to disk" alt="Record your stream to disk" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="recordLocalVideoToggle();" class="hidden float" style="cursor: pointer;">
+                        <i class="toggleSize las la-dot-circle" style="position: relative;" aria-hidden="true"></i>
+                    </div>
+                    <div id="recordLocalScreenbutton" onmousedown="event.preventDefault(); event.stopPropagation();"  data-state="0" title="Stop screen share recording" aria-label="Stop screen share recording" alt="Stop screen recording" tabindex="25" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" onclick="recordLocalScreenStopRecord();" class="hidden float" style="cursor: pointer;">
+                        <small>Stop<br>Screen<br>Record</small>
+                    </div>
+                    <span id="miniPerformer" style="pointer-events: auto;" class="hidden"></span>
+                    <span id="rooms" class="hidden" style="padding-top:3px;padding-left:6px;pointer-events: auto;color:#fff;"></span>
+                    <span id="groups" class="hidden" style="padding-top:3px;padding-left:6px;pointer-events: auto;color:#fff;text-align: center;"></span>
+                    <div id="hangupbutton2" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Cancel the Director's Video/Audio"  onclick="hangup2()" class="hidden float"  tabindex="26" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" style="cursor: pointer;" aria-label="stop publishing audio and video" alt="Disconnect Direcotor's cam">
+                        <i class="toggleSize las la-phone rotate225" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
 		</div>
-		<span
-				id="reportbutton"
-				title="Submit any error logs" 
-				onclick="submitDebugLog();"
-				style="cursor: pointer; visibility: hidden; display:none;z-index:3;"
-			>
-			<i style="float: right; bottom: 0px; cursor: pointer; position: fixed; right: 55px; color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-bug" aria-hidden="true"></i>
-		</span>
-		<span
-				id="helpbutton"
-				title="Show Help Info" 
-				onclick="warnUser('For support, please browse https://reddit.com/r/vdoninja or join the live chat on Discord at https://discord.vdo.ninja.\n\nThe Docs also contains many help guides and advanced settings, located at https://docs.vdo.ninja.\n\nTo access the video stats menu, hold CTRL (command) and Left-Click on a video. Most video issues can be fixed by using Wired Internet instead of Wi-Fi.')"
-				style="cursor: pointer; display:none;"
-				alt="How to Use This with OBS"
-			>
-			<i style="float: right; bottom: 0px; cursor: pointer; position: fixed; right: 33px; color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-question-circle" aria-hidden="true"></i>
-		</span>
-		<span title="Language Options" onclick="toggle(document.getElementById('languages'));" aria-label="language options" aria-pressed="false" id="translateButton">
-			<i style="float: right; bottom: 0px; cursor: pointer; position: fixed; right:  10px; color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-language" aria-hidden="true"></i>
-		</span>
-		<span title="Add to Calendar" onclick="toggle(document.getElementById('calendar'));" id="calendarButton">
-			<i style="float: right; bottom: 0px; cursor: pointer; position: fixed; right:  33px; color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-calendar" aria-hidden="true"></i>
+		<span id="miniTaskBar" style="float: right; bottom: 0px;right:0; position:fixed; display:flex;">
+			<div id="closedList_connectUsers" class="hidden"  onclick="getById('connectUsers').classList.remove('hidden');getById('closedList_connectUsers').classList.add('hidden');">
+				<i class="las la-theater-masks"></i>
+			</div>
+			<span
+					id="reportbutton"
+					title="Submit any error logs" 
+					onclick="submitDebugLog();"
+					style="cursor: pointer;z-index:3;display:none;"
+					class="hidden"
+				>
+				<i style="cursor: pointer; color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-bug" aria-hidden="true"></i>
+			</span>
+			<span
+					id="helpbutton"
+					title="Show Help Info" 
+					onclick="warnUser('For support, please browse https://reddit.com/r/vdoninja or join the live chat on Discord at https://discord.vdo.ninja.\n\nThe Docs also contains many help guides and advanced settings, located at https://docs.vdo.ninja.\n\nTo access the video stats menu, hold CTRL (command) and Left-Click on a video. Most video issues can be fixed by using Wired Internet instead of Wi-Fi.')"
+					style="cursor: pointer; display:none;"
+					alt="How to Use This with OBS"
+				>
+				<i style="cursor: pointer;  color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-question-circle" aria-hidden="true"></i>
+			</span>
+			<span title="Language Options" onclick="toggle(document.getElementById('languages'));" aria-label="language options" aria-pressed="false" id="translateButton">
+				<i style="cursor: pointer;color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-language" aria-hidden="true"></i>
+			</span>
+			<span title="Add to Calendar" onclick="toggle(document.getElementById('calendar'));" id="calendarButton">
+				<i style="cursor: pointer;  color: #d9e4eb; padding: 2px; margin: 2px 2px 0 0; font-size: 140%;" class="las la-calendar" aria-hidden="true"></i>
+			</span>
 		</span>
 		<div id="mainmenu" class="row" style="opacity: 0;">
 			
@@ -280,7 +296,7 @@
 									</b>
 								</div>
 								<input type="text" autocorrect="off" autocapitalize="none"  id="videoname1" placeholder="Enter a room name here" onkeydown="checkStrengthRoom(event, 'securityLevelRoom');" onchange="checkStrengthRoom(event, 'securityLevelRoom');" onkeyup="enterPressed(event, createRoom);" maxlength="30" style="max-width: 431px;width: 100%;font-size: 110%; padding: 5px;" />
-								<button onclick="getById('videoname1').value = session.generateRandomString();getById('securityLevelRoom').style.display='none';" title="Generate a random room name" class="randomRoomName"></button>
+								<button onclick="getById('videoname1').value = session.generateRandomString();getById('securityLevelRoom').style.display='none';" title="Generate a random room name" class="randomRoomName"><i class="las la-random"></i></button>
 								<div id="securityLevelRoom" style="display:none;margin-top:3px;position:relative;top:3px;font-size:0.8em;"></div>
 							</th>
 							
@@ -327,14 +343,15 @@
 								<b>
 									<span data-translate="default-codec-select" title="Which video codec would you want used by default?" >Preferred Video Codec:  </span> 
 									<select style="font-size:1.1em" id="codecGroupFlag" type="checkbox" title="For large group rooms, this option can reduce the load on remote guests substantially" >
-									<option value="default" selected>Default</option>
-									<option value="vp9">VP9</option>
-									<option value="h264">H264</option>
-									<option value="vp8">VP8</option>
-									<option value="av1">AV1</option>
-								</select >
+										<option value="default" selected>Default</option>
+										<option value="vp9">VP9</option>
+										<option value="h264">H264</option>
+										<option value="vp8">VP8</option>
+										<option value="av1">AV1</option>
+									</select >
 								</b>
-							</th>	
+							</th>
+							
 						</tr>
 						</table>
 						
@@ -343,26 +360,26 @@
 								<span data-translate="enter-the-rooms-control">Enter the room's Control Center in the director's role</span>
 							</button>
 							<br />
-							<button class="white roomnotes" style="display: block;" onclick="toggle(document.getElementById('roomnotes'),this);">
+							<button class="roomnotes" style="display: block;" onclick="toggle(document.getElementById('roomnotes'),this);">
 								<span data-translate="show-tips">Show me some tips..</span>
 							</button>
 							
-							<ul style=" margin: auto auto; max-width: 500px; display: none; text-align: left;" class="roomnotes" id="roomnotes">
+							<ul style="max-width: 500px; display: none; text-align: left;" class="roomnotes" id="roomnotes">
 								<span data-translate="added-notes" >
-									<u>
-										<i>Important Tips:</i><br /><br />
-									</u>
+									<i>Important Tips:</i>
+									<br><br>
 									<li>Disabling video sharing between guests will improve performance</li>
 									<li>Invite only guests to the room that you trust.</li>
 									<li>The "Recording" option is considered experimental.</li>
 									<li><a href="https://params.vdo.ninja" style="color:black;"><u>Advanced URL parameters</u></a> are available to customize rooms.</li>
 								</span>
-								<br />
-								<br />
 							</ul>
-							<br /><br />
+							<br />
+							<br />
 							<i data-translate="looking-to-just-chat-and-not-direct">Looking to just chat and not direct?</i>
-							<button onclick="jumptoroom2()" class="gobutton" style="width:100%;" alt="Enter the room as the group's director" title="You'll enter as the room's director">
+							<br />
+							<br />
+                            <button onclick="jumptoroom2()" class="gobutton" style="width:100%;" alt="Enter the room as the group's director" title="You'll enter as the room's director">
 								<span data-translate="join-the-room-basic">Join the room as a Participant, rather than a director</span>
 							</button>
 						</span>
@@ -379,7 +396,7 @@
 				<h2 id="add_camera">
 					<span data-translate="add-your-camera">Add your Camera to OBS</span>
 				</h2>
-				<div class="container-inner">
+				<div class="container-inner" id="add_camera_inner">
 					<br />
 					<p>
 						<video id="previewWebcam" class="previewWebcam task" title="Right-click this video for additional options" data-menu="context-menu-video" oncanplay="updateStats();" controlsList="nodownload" muted autoplay playsinline ></video>
@@ -404,7 +421,9 @@
 						<span><i class="las la-headphones"></i><span data-translate="you-are-using-headphones-earphones">You are using headphones / earphones</span></span>
 					</div>
 					<div id="videoMenu" class="videoMenu">
-						<span style="padding-right:2px;display:inline-block;position:relative;top:1px;"><i class="las la-video"></i><span data-translate="video-source"> Video Source </span></span>
+						<div class="title">
+                            <i class="las la-video"></i><span data-translate="video-source"> Video Source </span>
+                        </div>
 						<span style="display:inline-block;padding-top: 5px;">
 							<select id="videoSourceSelect" alt="Video source list"></select>
 							<span id="gear_webcam" onclick="toggle(document.getElementById('videoSettings'));">
@@ -443,7 +462,7 @@
 							<input type="checkbox" id='micStereoMonoInput' alt="Mono microphone audio"  onchange="toggleMonoStereoMic(this);">Mono
 						</span>
 						<a id="multiselect-trigger" class="form-control multiselect-trigger" >
-							<div  class="audioTitle">
+							<div  class="title">
 								<i class="las la-microphone-alt"></i><span data-translate="select-audio-source"> Audio Source(s) </span>
 								<i id='chevarrow1' class="chevron bottom" aria-hidden="true"></i>
 								<div class="meter" id="meter1"></div><div class="meter2" id="meter2"></div>
@@ -464,35 +483,35 @@
 					</div>
 					<br style="line-height: 0;" />
 					<div id="headphonesDiv" class="audioMenu">
-						<div class="audioTitle2">
+						<div class="title">
 						<i class="las la-headphones"></i><span data-translate="select-output-source"> Audio Output Destination
-						</span><button onclick="playtone()" class="white" style="margin:0 0 0 15px;padding: 2px 10px 0px 10px;" type="button">Test</button></div>
+						</span><button id="testtonebutton" onclick="playtone()" class="white" type="button">Test</button></div>
 						<select id="outputSource" alt="Audio output device" ></select>
 						<div id="headphoneTip1" class="cameraTip hidden">
 							<i class="las la-info-circle"></i>
 							<p><span id="headphoneTipContext1"></span></p>
 						</div>
 					</div>
-					
+					<br style="line-height: 0;" />
 					<div id="avatarDiv" class="hidden">
-						<div style="text-align: left;display: inline-block;">
+						<div class="title">
 							<i class="las la-robot"></i><span data-translate="select-avatar-image"> Default Avatar / Placeholder Image </span>
 						</div>
 						<div id="selectAvatarImage" style="margin-top:10px;">
 							<img src="./media/avatar.webp" crossOrigin="Anonymous" loading="lazy" id="defaultAvatar1" style="max-width:130px;max-height:73.5px;display:inline-block;margin:10px;cursor:pointer;" onclick="changeAvatarImage(event, this);"/>
-							<label class="selected" id="noAvatarSelected" style="width:130px;display:inline-block;margin:0 1px; text-align: center; cursor:pointer;">
+							<label class="selected" id="noAvatarSelected" style="width:130px;display:inline-block;text-align: center; cursor:pointer;">
 							  <i class="las la-minus-circle" style="font-size: 3em;"></i><br />No Image Selected
 							  <button onclick="changeAvatarImage(event, this)" style="position: fixed; top: -100em; margin-left:10px; border:1px solid #555;"></button>
 							</label>
-							<label style="width:130px;display:inline-block;margin:10px 1px; text-align: center; cursor:pointer;">
+							<label style="width:130px;display:inline-block; text-align: center; cursor:pointer;">
 							  <i class="las la-hdd" style="font-size: 3em;"></i><br />Select Local Image
 							  <input type="file" onchange="changeAvatarImage(event, this)" accept="image/*" style="position: fixed; top: -100em; margin-left:10px; border:1px solid #555;"> 
 							</label>
 						</div>
 					</div>
-					
+					<br style="line-height: 0;" />
 					<div id="effectsDiv">
-						<div style="text-align: left;display: inline-block;">
+						<div class="title">
 							<i class="las la-robot"></i><span data-translate="select-digital-effect"> Digital Video Effects </span>
 						</div>
 						<select id="effectSelector" alt="Digital video effect options"  onchange="effectsDynamicallyUpdate(event, this);">
@@ -522,13 +541,13 @@
 						</div>
 						
 					</div>
-					<div id="addPasswordBasic" >
-						<i class="las la-key"></i><span data-translate="add-a-password"> Add a Password</span>
-						<input type="text" id="passwordBasicInput" placeholder="optional" style="border: solid 1px #AAA;
-							padding: 4px 6px;
-							width: 200px;
-							margin: 0 6px;"/>
-					</div>
+					<br style="line-height: 0;" />
+					<div id="addPasswordBasic">
+                        <div class="title">
+                            <i class="las la-key"></i><span data-translate="add-a-password"> Add a Password</span>
+                        </div>
+                        <input type="text" id="passwordBasicInput" placeholder="optional"/>
+                    </div>
 					
 					<div id="SafariWarning" class="startupWarning hidden">
 						<i class="las la-exclamation-circle"></i>
@@ -537,6 +556,18 @@
 					</div>
 					
 				</div>
+				<div class="outer close">
+					<div class="inner">
+						<label class="labelclass">
+							<span data-translate="back">Back</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="container-3a"  title="Add your Microphone to OBS" onkeyup="enterPressedClick(event,this);"  alt="Add your Microphone to OBS" tabindex="3" role="button" aria-pressed="false" class="microphoneBackground column columnfade pointer rounded card hidden" onclick="previewWebcam(true)" style=" overflow-y: auto;">
+				<h2 id="add_microphone">
+					<span data-translate="add-your-microphone">Add your Microphone to OBS</span>
+				</h2>
 				<div class="outer close">
 					<div class="inner">
 						<label class="labelclass">
@@ -554,15 +585,14 @@
 						<video id="screenshare" autoplay="true" muted="true" loop src="./media/screenshare.webm" class="lazy" style='background-image: unset;'></video>
 					</span>
 					<br />
-					<button class='gobutton' style="padding: 10px; font-size: 120%;" alt="clilck to select you screen to share" onclick="publishScreen()">
+					<button class='gobutton' style="padding: 10px; font-size: 120%;animation: pulsate 2s ease-out infinite;" alt="clilck to select you screen to share" onclick="publishScreen()">
 						<span data-translate="select-screen-to-share">SELECT SCREEN TO SHARE</span>
 					</button>
 					<span id="gear_screen" style="display: inline-block; cursor: pointer;" onclick="toggle(document.getElementById('videoSettings2'));">
-						&nbsp;&nbsp;
 						<i class="las la-cog" style="font-size: 170%; vertical-align: middle;" aria-hidden="true"></i>
 					</span>
 					<center>
-						<span id="videoSettings2" style="margin: auto auto; display: none; border: 3px solid #ccc; max-width: 500px; padding: 10px 10px 5px 10px; margin: 0px 0px 10px;">
+						<span id="videoSettings2" style="display: none;">
 							<form id="webcamquality2">
 								<input type="radio" id="fullhd2" name="resolution2" value="0" />
 								<label for="fullhd">
@@ -578,7 +608,7 @@
 								<label for="nothd">
 									<span data-translate="smooth-cool">360p (smooth)</span>
 								</label>
-								<div id="webcamstats2" style="padding: 5px 0 0 0;"></div>
+								<div id="webcamstats2"></div>
 							</form>
 						</span>
 					</center>
@@ -587,8 +617,10 @@
 						<p><span data-translate="privacy-disabled">Privacy warning: The director will be able to remotely change your camera, microphone, and URL while this page is open, if you continue.</span></p>
 					</div>
 					<div id="audioScreenShare1">
-						<i class="las la-microphone-alt"></i>
-						<span data-translate="audio-sources">Audio Sources</span>
+                        <div class="title">
+                            <i class="las la-microphone-alt"></i>
+                            <span data-translate="audio-sources">Audio Sources</span>
+                        </div>
 						<select id="audioSourceScreenshare" multiple  alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" onchange="requestAudioStream();">
 							<option value="screenshare" selected>
 								Screen Share Audio (default)
@@ -600,17 +632,19 @@
 					</div>
 					<br />
 					<div id="headphonesDiv2">
-						<i class="las la-headphones"></i>
-						<span data-translate="select-output-source"> Audio Output Destination: <button onclick="playtone(true)" class="white" style="padding:3px 5px 2px 5px; margin:0; margin-left:15px; position: relative; " type="button">Test</button></span>
-						<select id="outputSourceScreenshare" style="background-color: #FFF; margin-top:5px; padding:10px 5px; width:100%; display:inline-block; vertical-align: middle;" onclick="requestOutputAudioStream();">
+                        <div class="title">
+                            <i class="las la-headphones"></i>
+                            <span data-translate="select-output-source"> Audio Output Destination: <button onclick="playtone(true)" class="white" style="padding:3px 5px 2px 5px; margin:0; margin-left:15px; position: relative; " type="button">Test</button></span>
+						</div>
+                        <select id="outputSourceScreenshare" onclick="requestOutputAudioStream();">
 							<option value="default">
 								Default Device
 							</option>
 						</select>
 					</div>
 					<br />
-					<div id="audioScreenCaptureDocs" data-translate="application-audio-capture">For application-specific audio capture, <a href='https://docs.vdo.ninja/audio' style='color: #007AC8;' target="_blank">see here</a></div>
-					<div id="audioScreenCaptureDocs2" data-translate="1080p-screen-capture-guide">For achieving 1080p60 game-capture, <a href='https://docs.vdo.ninja/guides/how-to-screen-share-in-1080p' style='color: #007AC8;'  target="_blank">see here</a></div>
+					<div id="audioScreenCaptureDocs" data-translate="application-audio-capture">For application-specific audio capture, <a href='https://docs.vdo.ninja/audio' target="_blank">see here</a></div>
+					<div id="audioScreenCaptureDocs2" data-translate="1080p-screen-capture-guide">For achieving 1080p60 game-capture, <a href='https://docs.vdo.ninja/guides/how-to-screen-share-in-1080p' target="_blank">see here</a></div>
 					
 				</div>
 				<div class="outer close">
@@ -625,7 +659,7 @@
 				<h2>
 					<span data-translate="create-reusable-invite">Create Reusable Invite</span>
 				</h2>
-				<div id="gencontent2" style="display:none;background-color: rgb(221, 221, 221); max-height: 100%;min-height: 90%;"></div>
+				<div id="gencontent2" style="display:none; max-height: 100%;min-height: 90%;"></div>
 				<div id="gencontent" class="container-inner">
 					
 					<br />
@@ -734,8 +768,8 @@
 							</div>
 						</div>
 						<div class="invite_setting_group_links">See the 
-							<a style="text-decoration: none; color: blue;" target="_blank" href="https://docs.vdo.ninja/advanced-settings">documentation</a> for a list of all options and details.<br /><br />
-							Try out the advanced <a style="text-decoration: none; color: blue;" target="_blank" href="https://invite.vdo.ninja/">invite generator</a> here as well.
+							<a target="_blank" href="https://docs.vdo.ninja/advanced-settings">documentation</a> for a list of all options and details.<br /><br />
+							Try out the advanced <a target="_blank" href="https://invite.vdo.ninja/">invite generator</a> here as well.
 						</div>
 					</span>
 				</div>
@@ -786,7 +820,7 @@
 			
 			<div id="container-6" class="column columnfade pointer rounded card hidden" style=" overflow-y: auto;">
 				<h2><span data-translate="share-website-iframe">Share Website</span></h2>
-				<i style="margin-top:30px;font-size:560%;overflow:hidden;" class="las la-broadcast-tower"></i>
+				<i style="margin-top:30px;font-size:560%;overflow:hidden;" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
 					<br />
 					<div id="previewIframe"></div>
@@ -817,47 +851,47 @@
 			
 			<div id="container-7" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './speedtest.html';">
 				<h2><span data-translate="run-a-speed-test">Run a Speed Test</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-tachometer-alt"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-tachometer-alt"></i>
 			</div>
 			
 			<div id="container-8" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './mixer.html';">
 				<h2><span data-translate="try-the-mixer-out">Custom Mixed Layouts</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-blender"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-blender"></i>
 			</div>
 			
 			<div id="container-14" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://versus.cam';">
 				<h2><span data-translate="try-out-versus-cam">Multi-Stream Monitor</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-gamepad"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-gamepad"></i>
 			</div>
 			
 			<div id="container-15" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './comms.html';">
 				<h2><span data-translate="voice-comms-app">Group Voice Comms</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-comments"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-comments"></i>
 			</div>
 			
 			<div id="container-9" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://guides.vdo.ninja';">
 				<h2><span data-translate="read-the-guides">Basic Usage Guides</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-book-open"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-book-open"></i>
 			</div>
 			
 			<div id="container-13" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://linkgen.vdo.ninja';">
 				<h2><span data-translate="wizard-link-generator">Wizard Link Generator</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-hat-wizard"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-hat-wizard"></i>
 			</div>
 			
 			<div id="container-10" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja';">
 				<h2><span data-translate="get-full-documentation">Full Documentation</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-info"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-info"></i>
 			</div>
 			
 			<div id="container-11" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://github.vdo.ninja';">
 				<h2><span data-translate="get-the-source-code">Source Code</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-code-branch"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-code-branch"></i>
 			</div>
 			
 			<div id="container-12" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja/getting-started/sponsor';">
 				<h2><span data-translate="show-your-support">Show Your Support</span></h2>
-				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="las la-heartbeat"></i>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-heartbeat"></i>
 			</div>
 			
 			<p></p>
@@ -888,15 +922,12 @@
 							<li>
 								Samsung smartphones (A-series) may fail to publish video with some mobile browsers; try using Firefox Mobile or the native <a href='https://docs.vdo.ninja/getting-started/native-mobile-app-versions#android-download-link'>Android app</a> in these cases.
 							</li>
-							<li>
-								Some devices that use hardware encoding can experience video issues; switching to VP8 or VP9 as a <a target='_blank' title='Jump to the documentation' href='https://docs.vdo.ninja/viewers-settings/codec'>codec</a> may help.
-							</li>
 							<br />
 							<h4>
 								<span style="color:#daad09;">Welcome to VDO Ninja! We've rebranded!  Nothing else is changing and we're staying 100% free.</span>
 							</h4>
 							<br />
-							😁 This is Version 23; it's still in development. 🧪 Please report any issues you have with it. Development <a target="_blank" href='https://updates.vdo.ninja/'>updates are here.</a>
+							😁🌱 Site last updated on May 8th. If facing new problems, the previous version can still be <a href="https://vdo.ninja/v22/">accessed here</a>. Development <a target="_blank" href='https://updates.vdo.ninja/'>updates are here.</a>
 							<br />
 							<br />
 							<h3>
@@ -966,8 +997,8 @@
 						</label>
 							<span data-translate="guests-hear-others" style="line-height:0;position:relative;top:-3px;">Guests hear others</span>
 						</span>
-						<button class='pull-right grey' style='font-size:1.15em' onclick='copyFunction(getById("director_block_1"),event)'><i class='las la-copy'></i><span data-translate="copy-link">Copy link</span></button>
-						<button class='pull-right grey' style='font-size:1.15em' id="showCustomizerButton1"  onclick='showCustomizer(1,this)'><i class='las la-tools'></i><span data-translate="customize">Customize</span></button>
+						<button class='pull-right' onclick='copyFunction(getById("director_block_1"),event)'><i class='las la-copy'></i><span data-translate="copy-link">Copy link</span></button>
+						<button class='pull-right' id="showCustomizerButton1"  onclick='showCustomizer(1,this)'><i class='las la-tools'></i><span data-translate="customize">Customize</span></button>
 					<span>
 				</div>
 			</div>
@@ -985,8 +1016,8 @@
 						</label>
 							<span data-translate="auto-add-guests" style="line-height:0;position:relative;top:-3px;">Auto-add guests</span>
 						</span>
-						<button class='pull-right grey' style='font-size:1.15em' onclick='copyFunction(getById("director_block_3"),event)'><i class='las la-copy'></i><span data-translate="copy-link">Copy link</span></button>
-						<button class='pull-right grey' style='font-size:1.15em' id="showCustomizerButton3"  onclick='showCustomizer(3,this)'><i class='las la-tools'></i><span data-translate="customize">Customize</span></button>
+						<button class='pull-right' style='font-size:1.15em' onclick='copyFunction(getById("director_block_3"),event)'><i class='las la-copy'></i><span data-translate="copy-link">Copy link</span></button>
+						<button class='pull-right' style='font-size:1.15em' id="showCustomizerButton3"  onclick='showCustomizer(3,this)'><i class='las la-tools'></i><span data-translate="customize">Customize</span></button>
 					<span>
 				</div>
 			</div>
@@ -998,46 +1029,46 @@
 						<input type="checkbox" data-param="&s" onchange="updateLink(1,this);">
 						<span class="slider"></span>
 						</label><span class="tooltip" style='cursor: help;position:relative;bottom:2px;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;'>⚠<span class="tooltiptext" style="width: 16em;">This can cause guests to be too quiet or have feedback/echo issues</span></span> <span data-translate="pro-audio-mode">Pro-audio mode</span>
-						<Br />
+						<br />
 						<label class="switch" title="Audio-only sources are visually hidden from scenes">
 						  <input type="checkbox" data-param="&st" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="hide-audio-only-sources">Hide audio-only sources</span>
-						<Br />
+						<br />
 						
 						<label class="switch" title="Allow for remote stat monitoring via the monitoring tool">
 						  <input type="checkbox" data-param="&remote" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="remote-monitoring">Remote Monitoring</span>
-						<Br />
+						<br />
 						
 						<label class="switch" title="The guest will be asked if they want to reload the previous link when revisiting">
 						  <input type="checkbox" data-param="&sticky" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="invite-saved-to-cookie">Invite saved to cookie</span>
-						<Br />
+						<br />
 						
 						<label class="switch" title="Guest will be prompted to enter a Display Name">
 						  <input type="checkbox" data-param="&l" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="ask-for-display-name">Ask for display name</span>
-						<Br />
+						<br />
 						<label class="switch" title="Display Names will be shown in the bottom-left corner of videos">
 						  <input type="checkbox" data-param="&sl" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="show-display-names">Show display names</span>
-						<Br />
+						<br />
 						<label class="switch" title="Guests not actively speaking will be hidden">
 						  <input type="checkbox" data-param="&sas" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="show-active-speaker">Show active speakers</span>
-						<Br />
+						<br />
 						<label class="switch" title="Show a custom welcome message to the joining guest of this invite link">
 						  <input type="checkbox" data-param="&welcome" onchange="updateLinkWelcome(1,this);">
 						  <span class="slider"></span>
@@ -1051,31 +1082,31 @@
 						  <span class="slider"></span>
 						</label>
 						<span class="tooltip" style='cursor: help;position:relative;bottom:2px;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;'>⚠<span class="tooltiptext">This can cause video playback to lag</span></span><span data-translate="1080p60-if-available">1080p60 Video if Available</span>
-						<Br />
+						<br />
 						<label class="switch" title="The default microphone will be pre-selected for the guest">
 						  <input type="checkbox" data-param="&ad" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="auto-select-microphone">Auto-select default microphone</span>
-						<Br />
+						<br />
 						<label class="switch" title="The default camera device will selected automatically">
 						  <input type="checkbox" id="vd1toggle" data-param="&vd" onchange="if(getById('vd0toggle').checked){getById('vd0toggle').checked=false;updateLink(1,getById('vd0toggle'));} updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="auto-select-camera">Auto-select default camera</span>
-						<Br />
+						<br />
 						<label class="switch" title="The camera will load in a default safe-mode that may work if other modes fail.">
 						  <input type="checkbox" data-param="&safemode" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="compatibility-mode">Compatibility mode</span>
-						<Br />
+						<br />
 						<label class="switch" title="The guest won't have access to changing camera settings or screenshare">
 						  <input type="checkbox" data-param="&ns" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="hide-setting-buttons">Hide settings button</span>
-						<Br />
+						<br />
 						<label class="switch" title="Allow the guests to pick a virtual backscreen effect">
 						  <input type="checkbox" data-param="&effects" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
@@ -1089,15 +1120,13 @@
 						</label>
 						<span data-translate="disable-animated-mixing">Disable animations</span>
 						
-						<Br />
+						<br />
 						<label class="switch" title="This mode encodes the video and audio into chunks, which are shared with multiple viewers. Limited browser support. Can potentially reduce CPU and improve video quality, but will rely on a buffer.">
 						  <input type="checkbox" data-param="&chunked=500" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span class="tooltip" style='cursor: help;position:relative;bottom:2px;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;'>⚠<span class="tooltiptext">Pretty experimental and limited browser support, though relatively low CPU usage.</span></span>
 						<span data-translate="chunked-mode">P2P Chunked-mode</span>
-						
-						
 						
 					</div>
 					<div  style="display:inline-block;margin-top: 12px; position: relative; margin-right:10px;">
@@ -1106,25 +1135,25 @@
 						  <span class="slider"></span>
 						</label>
 						<span class="tooltip" style='cursor: help;position:relative;bottom:2px;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;'>⚠<span class="tooltiptext"><span data-translate="powerful-computers-only">Only use with powerful computers and small groups!!</span></span></span> <span data-translate="guests-see-HD-video">Guests see HD video</span>
-						<Br />
+						<br />
 						<label class="switch" title="The guest will not see their own self-preview after joining">
 						  <input type="checkbox" data-param="&np" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="no-self-preview">Disable self-preview</span>
-						<Br />
+						<br />
 						<label class="switch" title="Guests will have an option to poke the Director by pressing a button">
 						  <input type="checkbox" data-param="&hand" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="raise-hand-button">Display 'raise-hand' button</span>
-						<Br />
+						<br />
 						<label class="switch" title="Add an audio compressor to the guest's microphone">
 						  <input type="checkbox" data-param="&comp" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="enable-compressor">Enable audio compressor</span>
-						<Br />
+						<br />
 						<label class="switch" title="Add an Equalizer to the guest's microphone that the director can control">
 						  <input type="checkbox" data-param="&eq" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
@@ -1142,7 +1171,7 @@
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="prefix-screenshare">Prefix screenshare IDs</span>	
-						<Br />
+						<br />
 						<label class="switch" title="Allow the guest to select an avatar image for when they hide their camera">
 						  <input type="checkbox" data-param="&avatar" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
@@ -1158,21 +1187,21 @@
 						<span class="tooltip" style='cursor: help;position:relative;bottom:2px;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;'>⚠<span class="tooltiptext">Uses a server to restream data, rather than p2p.</span></span>
 						<span data-translate="meshcast-mode">Stream via server</span>
 						
-						<Br />
+						<br />
 						<label class="switch" title="The guest's self-video preview will appear tiny in the top right">
 						  <input type="checkbox" data-param="&mini" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="mini-self-preview">Mini self-preview</span>
 						
-						<Br />
+						<br />
 						<label class="switch" title="Show an ovelaid grid on the guest's preview video to help with self-centering of the guest.">
 						  <input type="checkbox" data-param="&grid" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="rule-of-thirds">Show rule-of-thirds grid</span>
 						
-						<Br />
+						<br />
 						<label class="switch" title="The guest can only see the Director's video, if provided">
 						  <input type="checkbox" data-param="&broadcast" id="broadcastSlider" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
@@ -1184,19 +1213,19 @@
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="mute-microphone-by-default">Muted; guest can unmute</span>
-						<Br />
+						<br />
 						<label class="switch" title="Have the guest join muted, so only the director can Unmute the guest.">
 						  <input type="checkbox" data-param="&g=0" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="unmute-by-director-only">Muted; director can unmute</span>
-						<Br />
+						<br />
 						<label class="switch" title="The guest will not be asked for a video device on connection">
 						  <input type="checkbox" id="vd0toggle" data-param="&vd=0" onchange="if(getById('vd1toggle').checked){getById('vd1toggle').checked=false;updateLink(1,getById('vd1toggle'));} updateLink(1,this);">
 						  <span class="slider"></span>
 						</label>
 						<span data-translate="guest-joins-with-no-camera">Guest joins with no camera</span>
-						<Br />
+						<br />
 						<label class="switch" title="Make the invite URL encoded, so parameters are harder to tinker with by guests. This also debrands the interface and gives it a new domain name.">
 						  <input type="checkbox" data-param="" id="obfuscate_director_1" onchange="updateLink(1,this);">
 						  <span class="slider"></span>
@@ -1320,7 +1349,7 @@
 					</div>
 				</a>
 			</div>
-			<div></div>
+			<div id="hiddenElements"></div>
 			<div id='guestFeeds' style="display:none">
 				<div id='deleteme'>
 					<div class='vidcon directorMargins' id='fakeguest1' style='min-height: 300px;text-align: center;'><h2><span data-translate="guest-1">Guest 1</span></h2><i class='las la-user-circle' style='font-size:8em; margin: 20px 0px;' aria-hidden='true'></i></div>
@@ -1337,368 +1366,361 @@
 		<div id="overlayMsgs" onclick="this.innerHTML = '';" style="display:none"></div>
 		<div id="stickyMsgs" class="hidden"></div>
 		<div id="bigPlayButton" onclick="this.innerHTML = '';" style="display:none"></div>
+
+		<!-- Guest & Director Control-Buttons Box -->
 		<div id="controls_blank" class="hidden controlCenterBox">
 			<div class="controlsGrid">
-			
-				<button data-action-type="forward" class="mainonly advanced" title="Move the user to another room, controlled by another director" onclick="directMigrate(this, event);">
-					<i class="las la-paper-plane"></i>
-					<span data-translate="forward-to-room">Transfer</span>
-				</button>
-				
-				<button data-action-type="direct-chat" class="mainonly" title="Send a Direct Message to this user." onclick="directorSendMessage(this);">
-					<i class="las la-envelope"></i>
-					<span data-translate="send-direct-chat">Message</span>
-				</button>
-				<span class="director-message-box hidden" data-action-type="messaging-box">
-					
-					<textarea data-action-type="messaging-box-text" placeholder="Enter your message here"></textarea>
-					<button data-action-type="messaging-box-close" class="">
-						<i class="las la-times"></i>
-						<span data-translate="close">close</span>
-					</button>
-					<span data-action-type="messaging-box-toggle" title="Toggle between the message appearing as a large overlay and as normal chat" >
-						<i class="las la-bell" style="font-size:170%; color:#FFF; cursor:pointer;"></i>
+				<!-- Volume & Mute Controls -->
+				<div class="row fourth">
+					<span class="tooltip" style="border: 0;">
+						<input data-action-type="volume" type="range" min="0" max="200" value="100" title="Remotely change the volume of this guest; updates on release. Dbl-click to reset." oninput="remoteVolumeUI(this)" onchange="remoteVolume(this);" ondblclick="this.value=100;remoteVolume(this);remoteVolumeUI(this);" />
+						<span class="tooltiptext" style='overflow: auto;left: 35%;width: 3em;top: -15px;margin: 0;position: absolute;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus,Code2000, Code2001, Code2002, Musica, serif, LastResort;' >100</span>
 					</span>
-					<button data-action-type="messaging-box-send">
-						<i class="las la-reply"></i>
-						<span data-translate="send-message">send message</span>
+					<button data-action-type="mute-guest" class="center" value="0" title="Mute this guest everywhere" onclick="remoteMute(this, event);">
+						<i class="las la-microphone-slash"></i><span data-translate="mute">Mute</span>
 					</button>
+				</div>
+				<!-- General Controls -->
+				<div class="row two"> 
+                    <!-- Video Feed Quality -->
+                    <div class="row three advanced">
+                        <button class="" data-action-type="change-quality1" title="Disable Video Preview" onclick="toggleQualityDirector(0, this.dataset.UUID, this);">
+                            <i class="las la-video-slash"></i>
+                        </button>
+                        <button class="pressed" data-action-type="change-quality2" title="Low-Quality Preview" onclick="toggleQualityDirector(50, this.dataset.UUID, this);">
+                            <i class="las la-video"></i>
+                        </button>
+                        <button class="" data-action-type="change-quality3" title="High-Quality Preview" onclick="toggleQualityDirector(1200, this.dataset.UUID, this);">
+                            <i class="las la-binoculars"></i>
+                        </button>
+                    </div>
+					<button data-action-type="direct-chat" class="mainonly" title="Send a Direct Message to this user." onclick="directorSendMessage(this);">
+						<i class="las la-envelope"></i>
+						<span data-translate="send-direct-chat">Message</span>
+					</button>
+
+					<!-- Messaging integrated menu -->
+					<span class="director-message-box hidden" data-action-type="messaging-box">
+						<textarea data-action-type="messaging-box-text" placeholder="Enter your message here"></textarea>
+						
+						<span data-action-type="messaging-box-toggle" title="Toggle between the message appearing as a large overlay and as normal chat">
+							<i class="las la-bell" style="font-size:170%; color:#FFF; cursor:pointer;"></i>
+						</span>
+						<button class="message-close" data-action-type="messaging-box-close">
+							<i class="las la-times"></i>
+							<span data-translate="close">close</span>
+						</button>
+						<button class="message-send" data-action-type="messaging-box-send">
+							<i class="las la-reply"></i>
+							<span data-translate="send-message">send message</span>
+						</button>
+					</span>	
+
+					<button data-action-type="forward" class="mainonly advanced" title="Move the user to another room, controlled by another director" onclick="directMigrate(this, event);">
+						<i class="las la-paper-plane"></i>
+						<span data-translate="forward-to-room">Transfer</span>
+					</button>
+					<button data-action-type="hangup" class="mainonly"  title="Force the user to Disconnect. They can always reconnect." onclick="directHangup(this, event);">
+						<i class="las la-sign-out-alt"></i>
+						<span data-translate="disconnect-guest">Hangup</span>
+					</button>
+                </div>
+                <div class="flexBreak"></div>
+				<div class="row three"> 
+					<button data-action-type="solo-chat" class="mainonly advanced" title="Toggle solo voice chat or hold CTRL/CMD when selecting to make it two-way private." onclick="session.toggleSoloChat(this.dataset.UUID, event);">
+						<i class="las la-microphone"></i>
+						<span data-translate="voice-chat">Solo Talk</span>
+					</button>
+					<button data-action-type="solo-video" class="advanced" title="Solo this video everywhere. (Hold CTRL/CMD to just make video larger)" onclick="requestInfocus(this, event);">
+						<i class="las la-user"></i>
+						<span data-translate="solo-video">Highlight</span>
+					</button>
+                    <button data-action-type="mute-video-guest" class="advanced" title="Disable this guest's video track" onclick="remoteMuteVideo(this, event);">
+                        <i class="las la-video-slash"></i>
+                        <span data-translate="mute-video-guest">Video off</span>
+                    </button>
+                    <button class="mainonly advanced" data-action-type="toggle-remote-speaker" title="Toggle the remote guest's speaker output" onclick="remoteSpeakerMute(this, event);">
+                        <i class="las la-volume-off"></i> <span data-translate="toggle-remote-speaker">Deafen</span>
+                    </button>
+                    <button class="advanced" data-action-type="hide-guest" title="Hide this guest everywhere" onclick="remoteHideVideo(this, event);">
+                        <i class="las la-user-slash"></i>
+                        <span data-translate="hide-guest">Hide</span>
+                    </button>
+                    <button class="mainonly advanced" data-action-type="toggle-remote-display" title="Toggle the remote guest's display output" onclick="remoteDisplayMute(this, event);">
+                        <i class="las la-eye-slash"></i> <span data-translate="toggle-remote-display">Blind</span>
+                    </button>
+					<button data-action-type="addToScene" class="advanced" title="Add this Video to any remote '&scene=1'" data-scene="1" onclick="directEnable(this, event);">
+						<i class="las la-plus-square"></i>
+						<span data-translate="add-to-scene">add to scene 1</span>
+					</button>
+                </div>
+				<button class="hideDropMenu advanced" onclick="toggleByDataset('1');getById('chevarrow3').classList.toggle('bottom');getById('chevarrow3').classList.toggle('right');">
+					<i id="chevarrow3" class="chevron right" aria-hidden="true"></i>
+					<span data-translate="scene-options">Scene options</span>
+				</button>
+				<div class="group hidden" data-cluster="1">
+					<!-- Scene Controls -->
+					<div class="row two">
+                       <button data-action-type="addToScene" class="advanced" title="Add this Video to any remote '&scene=2'" data-scene="2" onclick="directEnable(this, event);">
+							<i class="las la-plus-square"></i>
+							<span data-translate="add-to-scene2">add to scene 2</span>
+						</button>
+						<button data-action-type="mute-scene" title="Remotely Mute this Audio in all remote '&scene' views" onclick="directMute(this, event);">
+							<i class="las la-microphone-slash"></i>
+							<span data-translate="mute-scene">mute in scenes</span>
+						</button>
+					</div>
+
+					<!-- Row of Scenes -->
+					<div class="row six advanced">
+						<button data-action-type="addToScene" data-scene="3" title="Add to Scene 3" onclick="directEnable(this, event);">
+							<span>S3</span>
+						</button>
+						<button data-action-type="addToScene" data-scene="4" title="Add to Scene 4" onclick="directEnable(this, event);">
+							<span>S4</span>
+						</button>
+						<button data-action-type="addToScene" data-scene="5" title="Add to Scene 5" onclick="directEnable(this, event);">
+							<span>S5</span>
+						</button>
+						<button data-action-type="addToScene" data-scene="6" title="Add to Scene 6" onclick="directEnable(this, event);">
+							<span>S6</span>
+						</button>
+						<button data-action-type="addToScene" data-scene="7" title="Add to Scene 7" onclick="directEnable(this, event);">
+							<span>S7</span>
+						</button>
+						<button data-action-type="addToScene" data-scene="8" title="Add to Scene 8" onclick="directEnable(this, event);">
+							<span>S8</span>
+						</button>
+					</div>
+
+                    <button data-action-type="stats-remote" title="Request the statistics of this video in any active scene" onclick="toggleSceneStats(this);">
+                        <i class="las la-info-circle"></i>
+                        <span data-translate="stats-remote">Scene Stats</span>
+                    </button>
+                    <!-- Graph Section for Scenes -->
+					<div class="row two advanced">
+                        <span class="graphSection hidden" data-action-type="stats-graphs-bitrate" >
+                            <span class="hidden" data-message="true" data-no-scenes="true">No scenes active</span>
+                        </span>
+                        <span class="graphSection hidden" data-action-type="stats-graphs-details" >
+                            <span class="hidden" data-no-scenes="true"></span>
+                            <span data-action-type="stats-graphs-details-container" class="hidden">
+                                <span class="hidden" data-scene-name="true">scene</span>
+                                <span class="hidden" data-bitrate="true">bitrate (kbps)</span>
+                                <span class="hidden" data-resolution="true">resolution</span>
+                                <span class="hidden" style="word-break: break-all;" data-video-codec="true">video codec</span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+				
+				<button class="hideDropMenu advanced" onclick="toggleByDataset('2');getById('chevarrow4').classList.toggle('bottom');getById('chevarrow4').classList.toggle('right');">
+					<i id="chevarrow4" class="chevron right" aria-hidden="true"  ></i>
+					<span data-translate="additional-controls">Additional Controls</span>
+				</button>
+				<div class="group hidden" data-cluster="2">
+					<!-- General Controls -->
+					<div class="row two">
+						<!-- Mix Order Control -->
+						<span class="row three advanced" data-action-type="ordering">
+							<button class="center" data-action-type="order-down" title="Shift this Video Down in Order" onclick="changeOrder(-1,this.dataset.UUID);">
+								<span data-translate="order-down"><i class="las la-minus"></i></span>
+							</button>
+							<span class="orderspan">
+								<p style="text-align: center;font-size: 150%;" data-action-type="order-value" title="Current Index Order of this Video">0</p>
+								<p class="order-label">Mix Order</p>
+							</span>
+							<button class="center" data-action-type="order-up" title="Shift this Video Up in Order" onclick="changeOrder(1,this.dataset.UUID);">
+								<i class="las la-plus"></i>
+							</button>
+						</span>
+						<button class="mainonly advanced" data-action-type="create-timer"  title="Set a countdown timer that this guest sees. CTRL (cmd) + click to pause." onclick="directTimer(this, event);">
+							<i class="las la-clock"></i>
+							<span data-translate="create-timer">Create Timer</span>
+						</button>
+						<button data-action-type="recorder-local" title="Start Recording this remote stream to this local drive. *experimental*'" onclick="recordVideo(this, event)">
+							<i class="las la-compact-disc"></i>
+							<span data-translate="record-local"> Record Local</span>
+						</button>
+						<button data-action-type="recorder-remote" title="The Remote Guest will record their local stream to their local drive. *experimental*" onclick="requestVideoRecord(this)">
+							<i class="las la-compact-disc"></i>
+							<span data-translate="record-remote"> Record Remote</span>
+						</button>
+						<button  class="mainonly" data-action-type="change-params" style="display:none" title="Change user parameters" onclick="promptUser('transferSettingsTemplate', this.dataset.UUID);">
+							<i class="las la-cog"></i>
+							<span data-translate="change-params">URL Params</span>
+						</button>
+						<button class="mainonly advanced" data-action-type="change-url" title="Remotely reload the guest's page with a new URL" onclick="directPageReload(this, event);">
+							<i class="las la-sync"></i>
+							<span data-translate="change-url">Change URL</span>
+						</button>
+						<button  class="mainonly advanced" data-action-type="open-file-share"  title="Allow the guest to select a file to upload to the director. Once shared, it will show in the chat as a download link." onclick="requestFileUpload(this)">
+							<i class="las la-file-upload"></i>
+							<span data-translate="request-upload"> Request File</span>
+						</button>
+					</div>
 					
-				</span>	
-				<button data-action-type="hangup" class="mainonly"  title="Force the user to Disconnect. They can always reconnect." onclick="directHangup(this, event);">
-					<i class="las la-sign-out-alt"  style="color:#900"></i>
-					<span data-translate="disconnect-guest" >Hangup</span>
-				</button>
-				
-				<button data-action-type="solo-chat" class="mainonly advanced" title="Toggle solo voice chat or hold CTRL/CMD when selecting to make it two-way private." onclick="session.toggleSoloChat(this.dataset.UUID, event);">
-					<i class="las la-microphone" style="color:#090"></i>
-					<span data-translate="voice-chat">Solo Talk</span>
-				</button>
-				
-				<button data-action-type="addToScene" class="advanced" data-scene="1" title="Add this Video to any remote '&scene=1'" onclick="directEnable(this, event);">
-					<i class="las la-plus-square" style="color:#060"></i>
-					<span data-translate="add-to-scene">add to scene 1</span>
-				</button>
-				
-				<button data-action-type="solo-video" class="advanced" style="text-shadow: 0px 0px yellow;"  title="Solo this video everywhere" onclick="requestInfocus(this);">
-					<i class="las la-user"></i>
-					<span data-translate="solo-video">Highlight guest</span>
-				</button>
-				
-				<span class="tooltip" style="border: 0;">
-					<input data-action-type="volume" type="range" min="0" max="200" value="100" title="Remotely change the volume of this guest; updates on release. Dbl-click to reset." oninput="remoteVolumeUI(this)" onchange="remoteVolume(this);" ondblclick="this.value=100;remoteVolume(this);remoteVolumeUI(this);" />
-					<span class="tooltiptext" style='overflow: auto;left: 35%;width: 3em;top: -15px;margin: 0;position: absolute;font-family:"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus,Code2000, Code2001, Code2002, Musica, serif, LastResort;' >100</span>
-				</span>
-				
-				<button data-action-type="mute-guest" value="0" title="Mute this guest everywhere" onclick="remoteMute(this, event);">
-					<i class="las la-microphone-slash" style="color:#900"></i>
-					<span data-translate="mute-guest" >mute guest</span>
-				</button>
-				
-				<!----	  /////// BREAK ////////			-->
-				<span class="hideDropMenu" onclick="toggleByDataset('1');getById('chevarrow3').classList.toggle('bottom');getById('chevarrow3').classList.toggle('right');">
-					<i id="chevarrow3" style="padding:0px 7px 0 3px;" class="chevron right" aria-hidden="true"></i>
-					<span data-translate="More-scene-options">More scene options</span>
-				</span>
-				<span class="hideDropMenu" style="grid-column: 2;"></span>
-				
-				<button data-action-type="addToScene"  class="hidden advanced" data-cluster="1" data-scene="2" title="Add this Video to any remote '&scene=2'" onclick="directEnable(this, event);">
-					<i class="las la-plus-square" style="color:#060"></i>
-					<span data-translate="add-to-scene2">add to scene 2</span>
-				</button>
-				
-				<button data-action-type="mute-scene" class="hidden"  data-cluster="1" title="Remotely Mute this Audio in all remote '&scene' views" onclick="directMute(this, event);">
-					<i class="las la-microphone-slash" style="color:#900"></i>
-					<span data-translate="mute-scene" >mute in scene</span>
-				</button>
-				
-				<span class="hidden advanced" data-cluster="1" data-action-type="sceneCluster1">
-					<button data-action-type="addToScene" data-scene="3" title="Add to Scene 3" onclick="directEnable(this, event);">
-						<span >S3</span>
-					</button>
-					<button data-action-type="addToScene" data-scene="4" title="Add to Scene 4" onclick="directEnable(this, event);">
-						<span >S4</span>
-					</button>
-					<button data-action-type="addToScene" data-scene="5"  title="Add to Scene 5" onclick="directEnable(this, event);">
-						<span >S5</span>
-					</button>
-				</span>
-				
-				<span class="hidden advanced" data-cluster="1" data-action-type="sceneCluster2">
-					<button data-action-type="addToScene" data-scene="6" title="Add to Scene 6" onclick="directEnable(this, event);">
-						<span >S6</span>
-					</button>
-					<button data-action-type="addToScene" data-scene="7" title="Add to Scene 7" onclick="directEnable(this, event);">
-						<span >S7</span>
-					</button>
-					<button data-action-type="addToScene" data-scene="8" title="Add to Scene 8" onclick="directEnable(this, event);">
-						<span >S8</span>
-					</button>
-				</span>
-				
-				<button class="hidden advanced" data-cluster="1" data-action-type="force-keyframe" style=" background-image: linear-gradient(90deg, #C9F0FF 0%, #FFDFB9 39%, #FFDFDF 70%, #D9FFEC 100%);"   title="Force the remote sender to issue a keyframe to all scenes, fixing Pixel Smearing issues." onclick="requestKeyframeScene(this);">
-					<span data-translate="force-keyframe">Rainbow Puke Fix</span>
-				</button>
-				
-				<button  class="hidden" data-cluster="1" data-action-type="stats-remote"  title="Request the statistics of this video in any active scene" onclick="toggleSceneStats(this);">
-					<i class="las la-info-circle"></i>
-					<span data-translate="stats-remote"> Scene Stats</span>
-				</button>
-				
-				<span class="graphSection hidden" data-action-type="stats-graphs-bitrate" >
-					<span class="hidden" data-message="true" data-no-scenes="true">No scenes active</span>
-				</span>
-				<span class="graphSection hidden" data-action-type="stats-graphs-details" >
-					<span class="hidden" data-no-scenes="true"></span>
-					<span data-action-type="stats-graphs-details-container" class="hidden">
-						<span class="hidden" data-scene-name="true">scene</span>
-						<span class="hidden" data-bitrate="true">bitrate (kbps)</span>
-						<span class="hidden" data-resolution="true">resolution</span>
-						<span class="hidden" style="word-break: break-all;" data-video-codec="true">video codec</span>
-					</span>
-				</span>
-				
-				<!----	  /////// BREAK ////////			-->
-				<span class="hideDropMenu" onclick="toggleByDataset('2');getById('chevarrow4').classList.toggle('bottom');getById('chevarrow4').classList.toggle('right');">
-					<i id="chevarrow4" class="chevron right" aria-hidden="true" style="padding:0px 7px 0 3px;" ></i>
-					<span data-translate="additional-controls">Additional controls</span>
-				</span>
-				<span class="hideDropMenu" style="grid-column: 2;" ></span>
-				 
-				<button class="hidden" data-cluster="2" data-action-type="hide-guest"	title="Hide this guest everywhere" onclick="remoteMuteVideo(this, event);">
-					<i class="las la-video-slash"></i>
-					<span data-translate="hide-guest" >hide guest</span>
-				</button>
-				
-				<button class="hidden mainonly" data-cluster="2" data-action-type="toggle-remote-speaker" title="Toggle the remote guest's speaker output" onclick="remoteSpeakerMute(this, event);">
-					<i class="las la-volume-off"></i> <span data-translate="toggle-remote-speaker">Deafen Guest</span>
-				</button>
-				
-				<button class="hidden mainonly" data-cluster="2" data-action-type="toggle-remote-display" title="Toggle the remote guest's display output" onclick="remoteDisplayMute(this, event);">
-					<i class="las la-eye-slash"></i> <span data-translate="toggle-remote-display">Blind Guest</span>
-				</button>
-				
-				
-				<span class="hidden" data-cluster="2" data-action-type="change-quality">
-					<button data-action-type="change-quality1" title="Disable Video Preview" onclick="toggleQualityDirector(0, this.dataset.UUID, this);">
-						<i class="las la-video-slash"></i>
-					</button>
-					<button class="pressed" data-action-type="change-quality2" title="Low-Quality Preview" onclick="toggleQualityDirector(50, this.dataset.UUID, this);">
-						<i class="las la-video"></i>
-					</button>
-					<button data-action-type="change-quality3" title="High-Quality Preview" onclick="toggleQualityDirector(1200, this.dataset.UUID, this);">
-						<i class="las la-binoculars"></i>
-					</button>
-				</span>
-				
-				<span class="hidden advanced" data-cluster="2" data-action-type="ordering">
-					<button style="width:34px;" data-action-type="order-down" title="Shift this Video Down in Order"  onclick="changeOrder(-1,this.dataset.UUID);">
-						<span data-translate="order-down"><i class="las la-minus"></i></span>
-					</button>
-					<span class="orderspan">
-						<div style="text-align: center;font-size: 150%;" data-action-type="order-value" title="Current Index Order of this Video" >0</div>
-						Mix Order
-					</span>
-					<button style="width:34px;margin-left:0;height: 29px;" data-action-type="order-up" title="Shift this Video Up in Order"  onclick="changeOrder(1,this.dataset.UUID);">
-						<i class="las la-plus"></i>
-					</button>
-				</span>
-				
-				<button class="hidden mainonly advanced" data-cluster="2" data-action-type="change-url"   title="Remotely reload the guest's page with a new URL" onclick="directPageReload(this, event);">
-					<i class="las la-sync"></i>
-					<span data-translate="change-url">Change URL</span>
-				</button>
-				
-				<button  class="hidden mainonly advanced" data-cluster="2" data-action-type="change-params" style="display:none" title="Change user parameters" onclick="promptUser('transferSettingsTemplate', this.dataset.UUID);">
-					<i class="las la-cog"></i>
-					<span data-translate="change-params">URL Params</span>
-				</button>
-				
-				<button class="hidden" data-cluster="2"  data-action-type="recorder-local" title="Start Recording this remote stream to this local drive. *experimental*'" onclick="recordVideo(this, event)">
-					<i class="las la-circle"></i>
-					<span data-translate="record-local"> Record Local</span>
-				</button>
-				<button  class="hidden" data-cluster="2"  data-action-type="recorder-remote"  title="The Remote Guest will record their local stream to their local drive. *experimental*" onclick="requestVideoRecord(this)">
-					<i class="las la-circle"></i>
-					<span data-translate="record-remote"> Record Remote</span>
-				</button>
-				
-				<button  class="hidden mainonly advanced" data-cluster="2"  data-action-type="open-file-share"  title="Allow the guest to select a file to upload to the director. Once shared, it will show in the chat as a download link." onclick="requestFileUpload(this)">
-					<i class="las la-file-upload"></i>
-					<span data-translate="request-upload"> Request File</span>
-				</button>
-				
-				<button class="hidden mainonly" data-cluster="2" data-action-type="create-timer"  title="Set a countdown timer that this guest sees. CTRL (cmd) + click to pause." onclick="directTimer(this, event);">
-					<i class="las la-clock"></i>
-					<span data-translate="create-timer">Create Timer</span>
-				</button>
-				
-				
-				<span class="hidden advanced audiocluster1" data-cluster="2">
+					<!-- Row of Channels -->
+					<div class="row six advanced">
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 1" onclick="changeChannelOffset(this.dataset.UUID, 0);">
+							<span>C1</span>
+						</button>
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 2" onclick="changeChannelOffset(this.dataset.UUID, 1);">
+							<span>C2</span>
+						</button>
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 3" onclick="changeChannelOffset(this.dataset.UUID, 2);">
+							<span>C3</span>
+						</button>
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 4" onclick="changeChannelOffset(this.dataset.UUID,3);">
+							<span>C4</span>
+						</button>
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 5" onclick="changeChannelOffset(this.dataset.UUID, 4);">
+							<span>C5</span>
+						</button>
+						<button class="btn-HL-blue" data-action-type="add-channel" title="Set to Audio Channel 6" onclick="changeChannelOffset(this.dataset.UUID, 5);">
+							<span>C6</span>
+						</button>
+					</div>
 					
-					<button data-action-type="add-channel" title="Set to Audio Channel 1" onclick="changeChannelOffset(this.dataset.UUID, 0);">
-						<span >C1</span>
+					<!-- Row of Groups -->
+					<div class="row six advanced">
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="1" title="Add/remove from group 1" onclick="changeGroup(this);">
+							<span>G1</span>
+						</button>
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="2" title="Add/remove from group 2" onclick="changeGroup(this);">
+							<span>G2</span>
+						</button>
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="3" title="Add/remove from group 3" onclick="changeGroup(this);">
+							<span>G3</span>
+						</button>
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="4" title="Add/remove from group 4" onclick="changeGroup(this);">
+							<span>G4</span>
+						</button>
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="5" title="Add/remove from group 5" onclick="changeGroup(this);">
+							<span>G5</span>
+						</button>
+						<button class="btn-HL-green" data-action-type="toggle-group" data-group="6" title="Add/remove from group 6" onclick="changeGroup(this);">
+							<span>G6</span>
+						</button>
+					</div>
+				</div>
+				<div class="row two"> 
+                    <!-- Further Audio/Video Settings -->
+                    <div class="row two settingsWrapper" data-cluster="3">
+                        <button data-action-type="advanced-audio-settings" data-active="false" title="Remote Audio Settings" onclick="requestAudioSettings(this);">
+                            <i class="las la-sliders-h"></i>
+                            <span data-translate="advanced-audio-settings">Audio settings</span>
+                        </button>
+                        <button class="mainonly" data-action-type="advanced-camera-settings" data-active="false" title="Advanced Video Settings" onclick="requestVideoSettings(this);">
+                            <i class="las la-sliders-h"></i>
+                            <span data-translate="advanced-camera-settings">Video settings</span>
+                        </button>
+                    </div>
+				</div>
+				<div class='row one hidden advancedAudioSettings'></div>
+				<div class='row one hidden advancedVideoSettings'></div>
+			</div>
+		</div>
+		
+		<!-- &ShowDirector Control-Buttons Box -->
+		<div id="controls_directors_blank" class="hidden controlCenterBox">
+			<div class="controlsGrid">
+				<!-- General Controls -->
+				<div class="row two"> 
+					<button data-action-type="recorder-local" title="Start Recording this remote stream to this local drive. *experimental*'" onclick="recordLocalVideoToggle();">
+						<i class="las la-compact-disc"></i>
+						<span data-translate="record-director-local"> Record</span>
+					</button> 
+					<button data-action-type="mute-scene" title="Remotely Mute this Audio in all remote '&scene' views" onclick="directMute(this, event);">
+						<i class="las la-microphone-slash"></i>
+						<span data-translate="mute-scene">mute in scene</span>
 					</button>
-					<button data-action-type="add-channel" title="Set to Audio Channel 2" onclick="changeChannelOffset(this.dataset.UUID, 1);">
-						<span >C2</span>
+					<button data-action-type="solo-video" class="" title="Solo this video everywhere. (Hold CTRL/CMD to just make video larger)" onclick="requestInfocus(this, event);">
+						<i class="las la-user"></i>
+						<span data-translate="solo-video-director">Highlight</span>
 					</button>
-					<button data-action-type="add-channel" title="Set to Audio Channel 3" onclick="changeChannelOffset(this.dataset.UUID, 2);">
-						<span >C3</span>
+					<button data-action-type="addToScene" data-scene="1" class="" title="Add this Video to any remote '&scene=1'" onclick="directEnable(this, event, true);">
+						<i class="las la-plus-square"></i>
+						<span data-translate="add-to-scene">add to scene 1</span>
 					</button>
-				</span>
+				</div>
+
 				
-				<span class="hidden advanced audiocluster2" data-cluster="2">
-					
-					<button data-action-type="add-channel" title="Set to Audio Channel 4" onclick="changeChannelOffset(this.dataset.UUID,3);">
-						<span >C4</span>
+				<!-- Row of Scenes -->
+				<div class="row six advanced">
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="2" title="Add to Scene 2" onclick="directEnable(this, event);">
+						<span>S2</span>
 					</button>
-					<button data-action-type="add-channel" title="Set to Audio Channel 5" onclick="changeChannelOffset(this.dataset.UUID, 4);">
-						<span >C5</span>
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="3" title="Add to Scene 3" onclick="directEnable(this, event);">
+						<span>S3</span>
 					</button>
-					<button data-action-type="add-channel" title="Set to Audio Channel 6" onclick="changeChannelOffset(this.dataset.UUID, 5);">
-						<span >C6</span>
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="4" title="Add to Scene 4" onclick="directEnable(this, event);">
+						<span>S4</span>
 					</button>
-				</span>
-				
-				<span class="hidden advanced groupcluster1" data-cluster="2">
-					<button data-action-type="toggle-group" data-group="1" title="Add/remove from group 1" onclick="changeGroup(this);">
-						<span >G1</span>
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="5" title="Add to Scene 5" onclick="directEnable(this, event);">
+						<span>S5</span>
 					</button>
-					<button data-action-type="toggle-group" data-group="2" title="Add/remove from group 2" onclick="changeGroup(this);">
-						<span >G2</span>
+
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="6" title="Add to Scene 6" onclick="directEnable(this, event);">
+						<span>S6</span>
 					</button>
-					<button data-action-type="toggle-group" data-group="3" title="Add/remove from group 3" onclick="changeGroup(this);">
-						<span >G3</span>
+					<button class="btn-HL-peach" data-action-type="addToScene" data-scene="7" title="Add to Scene 7" onclick="directEnable(this, event);">
+						<span>S7</span>
 					</button>
-				</span>
-				
-				<span class="hidden advanced groupcluster2" data-cluster="2">
-					<button data-action-type="toggle-group" data-group="4" title="Add/remove from group 4" onclick="changeGroup(this);">
-						<span >G4</span>
+				</div>
+
+				<!-- Row of Groups -->
+				<div class="row six advanced">
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="1" title="Add/remove from group 1" onclick="changeGroupDirector(this);">
+						<span>G1</span>
 					</button>
-					<button data-action-type="toggle-group" data-group="5" title="Add/remove from group 5" onclick="changeGroup(this);">
-						<span >G5</span>
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="2" title="Add/remove from group 2" onclick="changeGroupDirector(this);">
+						<span>G2</span>
 					</button>
-					<button data-action-type="toggle-group" data-group="6" title="Add/remove from group 6" onclick="changeGroup(this);">
-						<span >G6</span>
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="3" title="Add/remove from group 3" onclick="changeGroupDirector(this);">
+						<span>G3</span>
 					</button>
-				</span>
-				<div data-cluster="3">
-					<button class="hidden" data-cluster="2" data-action-type="advanced-audio-settings"  data-active="false"  title="Remote Audio Settings" onclick="requestAudioSettings(this);">
-						<i class="las la-sliders-h"></i>
-						<span data-translate="advanced-audio-settings">Audio Settings</span>
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="4" title="Add/remove from group 4" onclick="changeGroupDirector(this);">
+						<span>G4</span>
 					</button>
-					<button class="hidden mainonly" data-cluster="2" data-action-type="advanced-camera-settings"  data-active="false"  title="Advanced Video Settings" onclick="requestVideoSettings(this);">
-						<i class="las la-sliders-h"></i>
-						<span data-translate="advanced-camera-settings">Video Settings</span>
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="5" title="Add/remove from group 5" onclick="changeGroupDirector(this);">
+						<span>G5</span>
+					</button>
+					<button class="btn-HL-green" data-action-type="toggle-group" data-group="6" title="Add/remove from group 6" onclick="changeGroupDirector(this);">
+						<span>G6</span>
 					</button>
 				</div>
 				
-			</div>	
-		</div>
-		
-		<div id="controls_directors_blank" class="hidden controlCenterBox">
-			<div class="controlsGrid">
-
-				<button data-action-type="addToScene" data-scene="1"  title="Add this Video to any remote '&scene=1'" onclick="directEnable(this, event, true);">
-					<i class="las la-plus-square"></i>
-					<span data-translate="add-to-scene">add to scene 1</span>
-				</button>
-				<button data-action-type="mute-scene" title="Remotely Mute this Audio in all remote '&scene' views" onclick="directMute(this, event);">
-					<i class="las la-microphone-slash"></i>
-					<span data-translate="mute-scene" >mute in scene</span>
-				</button>
-				
-				<span  class="advanced">
-					<button data-scene="2" data-action-type="addToScene" title="Add to Scene 2" onclick="directEnable(this, event, true);">
-						<span >S2</span>
-					</button>
-					<button data-scene="3" data-action-type="addToScene" title="Add to Scene 3" onclick="directEnable(this, event, true);">
-						<span >S3</span>
-					</button>
-					<button data-scene="4" data-action-type="addToScene" title="Add to Scene 4" onclick="directEnable(this, event, true);">
-						<span >S4</span>
-					</button>
-				</span>
-				
-				<span  class="advanced">
-					<button data-scene="5" data-action-type="addToScene" title="Add to Scene 5" onclick="directEnable(this, event, true);">
-						<span >S5</span>
-					</button>
-					<button data-scene="6" data-action-type="addToScene" title="Add to Scene 6" onclick="directEnable(this, event, true);">
-						<span >S6</span>
-					</button>
-					<button data-scene="7" data-action-type="addToScene" title="Add to Scene 7" onclick="directEnable(this, event, true);">
-						<span >S7</span>
-					</button>
-				</span>
-				
-				<span  class="advanced">
-					
-					<button data-action-type="toggle-group" data-group="1" title="Add/remove from group 1" onclick="changeGroupDirector(this);">
-						<span >G1</span>
-					</button>
-					<button data-action-type="toggle-group" data-group="2" title="Add/remove from group 2" onclick="changeGroupDirector(this);">
-						<span >G2</span>
-					</button>
-					<button data-action-type="toggle-group" data-group="3" title="Add/remove from group 3" onclick="changeGroupDirector(this);">
-						<span >G3</span>
-					</button>
-				</span>
-				
-				<span  class="advanced">
-					
-					<button data-action-type="toggle-group" data-group="4" title="Add/remove from group 4" onclick="changeGroupDirector(this);">
-						<span >G4</span>
-					</button>
-					<button data-action-type="toggle-group" data-group="5" title="Add/remove from group 5" onclick="changeGroupDirector(this);">
-						<span >G5</span>
-					</button>
-					<button data-action-type="toggle-group" data-group="6" title="Add/remove from group 6" onclick="changeGroupDirector(this);">
-						<span >G6</span>
-					</button>
-				</span>
-				
-				<button data-action-type="force-keyframe" class="advanced" title="Force the remote sender to issue a keyframe to all scenes, fixing Pixel Smearing issues." onclick="session.sendKeyFrameScenes();">
-					<span data-translate="force-keyframe">Rainbow Puke Fix</span>
-				</button>
-				
-				<button data-action-type="solo-video"   title="Solo this video everywhere" onclick="requestInfocus(this);">
-					<i class="las la-user"></i>
-					<span data-translate="solo-video-director">Highlight</span>
-				</button>
-				
-				<button data-action-type="recorder-local" title="Start Recording this remote stream to this local drive. *experimental*'" onclick="recordLocalVideoToggle();">
-					<i class="las la-circle"></i>
-					<span data-translate="record-director-local"> Record</span>
-				</button> 
-				
-				<span  class="advanced">
-					<button style="width:34px;" data-action-type="order-down" title="Shift this Video Down in Order"  onclick="changeOrderDirector(-1);">
-						<i class="las la-minus"></i>
+				<!-- Mix Order Control -->
+				<span class="row three advanced" data-action-type="ordering">
+					<button class="center" data-action-type="order-down" title="Shift this Video Down in Order" onclick="changeOrderDirector(-1);">
+						<span data-translate="order-down"><i class="las la-minus"></i></span>
 					</button>
 					<span class="orderspan">
-						<div style="text-align: center;font-size: 150%;" data-action-type="order-value-director" title="Current Index Order of this Video" >0</div>
-						Mix Order
+						<p style="text-align: center;font-size: 150%;" data-action-type="order-value-director" title="Current Index Order of this Video">0</p>
+						<p class="order-label">Mix Order</p>
 					</span>
-					<button style="width:34px;margin-left:0;" data-action-type="order-up" title="Shift this Video Up in Order"  onclick="changeOrderDirector(1);">
-						<span data-translate="order-up"><i class="las la-plus"></i></span>
+					<button class="center" data-action-type="order-up" title="Shift this Video Up in Order" onclick="changeOrderDirector(1);">
+						<i class="las la-plus"></i>
 					</button>
 				</span>
-				
 			</div>	
 		</div>
 		
 		<div id="popupSelector" style="display:none;">
+
 				<span id="videoMenu3">
-					<i class="las la-video"></i><span data-translate="video-source"> Video Source: </span>
-					<select id="videoSource3" ></select>			
-					<span id="refreshVideoButton" title="Activate or Reload this video device.">
-						<i style="top: 3px; cursor: pointer; font-size: 120%;  position: relative; left: 10px;" class="las la-sync-alt"></i>
-					</span>
-					<span id="gear_webcam3" style="display: none; cursor:pointer;" onclick="toggleQualityGear3();">
-						&nbsp;&nbsp;
-						<i class="las la-cog" style="font-size: 135%; top:1px; vertical-align: middle;" aria-hidden="true"></i>
+                    <div class="title">
+                        <i class="las la-video"></i><span data-translate="video-source"> Video Source: </span>
+                    </div>
+					<span style="display:inline-block;">
+						<select id="videoSource3" ></select>			
+						<span id="refreshVideoButton" title="Activate or Reload this video device.">
+							<i class="las la-sync-alt"></i>
+						</span>
+						<span id="gear_webcam3" style="display: none; cursor:pointer;" onclick="toggleQualityGear3();">
+							<i class="las la-cog" style="font-size: 135%; top:1px; vertical-align: middle;" aria-hidden="true"></i>
+						</span>
 					</span>
 					<span id="videoSettings3" style="display: none;">
 						<center>
@@ -1723,12 +1745,12 @@
 					</span>
 				</span>
 				
-				<div class="form-group multiselect" alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" >
+				<div id="audioMenu2" class="form-group multiselect" alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" >
 					<span class='gear_microphone gearflat hidden'>
 						<input type="checkbox" id='micStereoMonoInput3' onchange="toggleMonoStereoMic(this);">Mono
 					</span>
 					<a id="multiselect-trigger3" class="form-control multiselect-trigger" >
-						<div id="audioTitle2" class="title">
+						<div id="title" class="title">
 							<i class="las la-microphone-alt"></i><span data-translate="select-audio-source"> Audio Source(s) </span>
 							<i id="chevarrow2" class="chevron bottom" aria-hidden="true"></i>
 							<div class="meter" id="meter3"></div><div class="meter2" id="meter4"></div>
@@ -1799,19 +1821,24 @@
 				<button id="pIpStartButton" style="width: 135px; background-color:#EFEFEF;padding:20px;text-align:center;display:none;"><b>Preview PiP VIdeo</b><br /><i style="padding:5px; font-size:300%;color:black;" class="las la-compress-arrows-alt"></i></button>
 				
 				
-				<div class="hidden" id="grabDirectorSoloLinkParent" title="The solo view link of the Director's video."><i class="las la-user"></i> Director's solo link:<a onclick="copyFunction(this,event)" data-drag="1" draggable="true" id="grabDirectorSoloLink" data-menu="context-menu" class="task" ></a></div>
+				<div class="hidden" id="grabDirectorSoloLinkParent" title="The solo view link of the Director's video.">
+                    <div class="title">
+                        <i class="las la-user"></i> Director's solo link:
+                    </div>
+                    <a onclick="copyFunction(this,event)" data-drag="1" draggable="true" id="grabDirectorSoloLink" data-menu="context-menu" class="task" ></a>
+                </div>
 				<br />
-				<button onclick="toggleSettings()" class="toggleSettings"><i class="chevron right" style="font-size:150%;top:3px;position:relative;"></i> <b><span data-translate="close-settings">Close Settings</span></b></button>
+				<button onclick="toggleSettings()" class="toggleSettings"><i class="las la-chevron-right"></i><b><span data-translate="close-settings">Close Settings</span></b></button>
 				
 				<button id='advancedOptionsAudio' onclick="this.classList.toggle('highlight');toggle(getById('popupSelector_constraints_audio'),false,false); getById('popupSelector_constraints_loading').style.visibility='visible';" class="advancedToggle">
-				<i class="las la-sliders-h" style="font-size:150%;top:3px;position:relative;"></i> <b>Audio</b></button>
+				<i class="las la-sliders-h" style="position:relative;"></i> <b>Audio</b></button>
 				
 				<button id='advancedOptionsCamera' onclick="this.classList.toggle('highlight');toggle(getById('popupSelector_constraints_video'),false,false);  getById('popupSelector_constraints_loading').style.visibility='visible';" class="advancedToggle">
-				<i class="las la-sliders-h" style="font-size:150%;top:3px;position:relative;"></i> <b>Video</b></button>
+				<i class="las la-sliders-h" style="position:relative;"></i> <b>Video</b></button>
 				
 				<span class="mobileHide">
-					<button id='advancedOptionsGeneral' onclick="this.classList.toggle('highlight');toggle(getById('popupSelector_user_settings'),false,false);  getById('popupSelector_user_settings').style.visibility='visible';" style='padding: 10px 12px 12px 8px;margin: 0px 0px 0px 10px;'>
-					<i class="las la-user-cog" style="font-size:150%;top:1.5px;position:relative;"></i> <b><span data-translate="user">User</span></b></button>
+					<button id='advancedOptionsGeneral' onclick="this.classList.toggle('highlight');toggle(getById('popupSelector_user_settings'),false,false);  getById('popupSelector_user_settings').style.visibility='visible';" >
+					<i class="las la-user-cog" style="position:relative;"></i> <b><span data-translate="user">User</span></b></button>
 				</span>
 				
 				<span id="popupSelector_constraints_audio" class="popupSelector_constraints" style="display: none;">
@@ -1840,6 +1867,7 @@
 					<button class='hidden drawActive' onclick="drawOnScreenObject.color(this);" data-color='white' style="background-color:white; margin: 0 0 0 4px; border-radius: 5px; padding: 3px 3px;">🎨</button>
 					<br /><br />
 					<button class="generalButton" onclick="cycleStyleOptions();" id='toggleWaveformButton' title="Audio-only sources can be stylized in different ways">Cycle between several audio-visualizations styles</button>
+					<br />
 					<button class="generalButton" onclick="clearStorage();" title="Clear site's local storage and settings">Clear site's local browser storage and saved settings</button>
 					
 				</span>
@@ -1972,6 +2000,19 @@
 						<span data-translate="stop-record-to-disk">Stop Recording</span>
 					</a>
 				</li>
+				<li class="context-menu__item hidden">
+					<a href="#" class="context-menu__link" data-action="CopyFrameAsImage">
+						<i class="las la-external-link"></i>
+						<span data-translate="copy-to-clipboard-frame">Snapshot to clipboard</span>
+					</a>
+				</li>
+				<li class="context-menu__item hidden">
+					<a href="#" class="context-menu__link" data-action="SaveFrameToDisk">
+						<i class="las la-external-link"></i>
+						<span data-translate="save-current-frame">Save frame to disk</span>
+					</a>
+				</li>
+				
 				<li class="context-menu__item">
 					<a href="#" class="context-menu__link" data-action="ShowStats">
 						<i class="las la-external-link"></i>
@@ -2010,22 +2051,11 @@
 				</li>
 			</ul>
 		</nav>
-		
-		<div id="chatModule" style="display:none;text-align:right">
-			<a target="popup" id="popOutChat" style="cursor:pointer;text-align:right;color:#B3C7F9;" onclick="createPopoutChat();"><i class="las la-external-link-alt"></i></a>
-			<div id="chatBody"> 
-				<div class="inMessage" id="welcomeMsg" data-translate='welcome-to-vdo-ninja-chat'>
-					Welcome to the chat! You can send text messages directly to connected peers from here.
-				</div>
-			</div>
-			<input type="text" id="chatInput" placeholder="Enter chat message to send here" onkeypress="EnterButtonChat(event)" />
-			<button class="chatBarInputButton" onclick="sendChatMessage()" data-translate='send-chat'>Send</button>
-		</div>
-		
-		
+				
 		<div id="roomSettings" class="customModelPopup" style="display:none; user-select: none;">
 			<div class="promptModalInner">
 				<span class='modalClose' onclick="toggleRoomSettings();">×</span>
+				<span class='modalClose' style="right:25px;" onclick="this.parentNode.parentNode.classList.toggle('pinToSide');getById('main').classList.toggle('makeSmallerDirectorRoom');">📌</span>
 				<span></span>
 				<h3 data-translate="change-room-settings">Change room settings</h3><br />
 				
@@ -2034,8 +2064,8 @@
 				<input id="trbSettingInput" type="range" min="0" max="4000" value="500" onchange="getById('trbSettingInputManual').value=this.value;changeTRB(this);" oninput="getById('trbSettingInputFeedback').innerHTML = this.value;" style="width:calc(100% - 60px);display:inline-block;" />
 				<input id="trbSettingInputManual" min="0" value="500" onchange="getById('trbSettingInput').value=this.value;changeTRB(this);" oninput="getById('trbSettingInputFeedback').innerHTML = this.value;" style="width:42px;display:inline-block;text-align: center;" />
 				
-				<span style="margin: 20px 0 0 0;display:block" id='highlightDirectorSpan' title="Only the director's video will be visible to guests and within group scenes">
-					<input id="highlightDirector" style="width: 15px; height: 15px; margin:10px;" name="highlightDirector"  data-action-type="solo-video" type="checkbox" onchange="requestInfocus(this);" />
+				<span style="margin: 20px 0 0 0;display:block" id='highlightDirectorSpan' title="Only the director's video will be visible to guests and within group scenes. (Hold CTRL/CMD to just make video larger)">
+					<input id="highlightDirector" style="width: 15px; height: 15px; margin:10px;" name="highlightDirector"  data-action-type="solo-video" type="checkbox" onchange="requestInfocus(this, event);" />
 					<label for="highlightDirector" data-translate="highlight-director-only-video-guests-will-see">Highlight Director (only video guests will see)</label> 
 				</span>
 				
@@ -2077,6 +2107,49 @@
 					<label for="widgetURCheck">Embed a sidebar widget for all</label> 
 					<input id="widgetURL" onmousedown="toggleWidgetURL(this);event.preventDefault" onclick="toggleWidgetURL(this);event.preventDefault" class="hidden" style="cursor:pointer; display:inline-block; margin: 3px 0; margin-left: 10px; min-width: 230px; padding: 4px 5px 3px 5px; border: 1px solid black;" name="widgetURL" placeholder="Enter a URL for the sidebar page" type="text"  />
 				</span>
+				
+				
+				<span style="margin: 5px 0 0 0;display:block">
+					<button data-action-type="local-global-record" title="Record all the guests" onclick="
+						document.querySelectorAll('[data-action-type=\'recorder-local\']').forEach(target=>{
+							recordVideo(target);
+						});">
+						<i class="las la-compact-disc"></i>
+						<span data-translate="local-global-record">Local record - start all</span>
+					</button>
+					<button data-action-type="local-global-record" title="Record all the guests" onclick="
+						document.querySelectorAll('[data-action-type=\'recorder-local\']').forEach(target=>{
+							recordVideo(target);
+						});">
+						<i class="las la-square"></i>
+						<span data-translate="local-global-record">Local record - stop all</span>
+					</button>
+				</span>
+				<span style="margin: 5px 0 0 0;display:block">	
+					<button data-action-type="remote-global-record" title="Record all the guests" onclick="
+						window.focus();
+						async function jjj(){
+							var bitrate = await promptAlt(miscTranslations['what-bitrate'], false, false, 6000);
+							document.querySelectorAll('[data-action-type=\'recorder-remote\']').forEach(target=>{
+								requestVideoRecord(target, true, bitrate);
+							});
+						}
+						jjj();
+						">
+						<i class="las la-compact-disc"></i>
+						<span data-translate="remote-global-record">Remote record - start all</span>
+					</button>
+					<button data-action-type="remote-global-record" title="Record all the guests" onclick="
+						document.querySelectorAll('[data-action-type=\'recorder-remote\']').forEach(target=>{
+							if (target.classList.contains('pressed')){
+								requestVideoRecord(target, false);
+							}
+						});">
+						<i class="las la-square"></i>
+						<span data-translate="remote-global-record">Remote record - stop all</span>
+					</button>
+				</span>
+				
 				
 			</div>
 		</div>
@@ -2175,11 +2248,12 @@
 
 		<div id="connectUsers">
 			<div style="margin-bottom:5px"><u ><span data-translate="invisible-guests">Not Visible</span></u> 
-			<span title="Hide this window" id='hideusers' style="cursor:pointer;font-size:1.2em; float: right;" onclick="session.showList=false;getById('connectUsers').style.display = 'none';"><i class="las la-times"></i></span></div>
+			<span title="Hide this window" id='hideusers' style="cursor:pointer;font-size:1.2em; float: right;" onclick="getById('connectUsers').classList.add('hidden');getById('closedList_connectUsers').classList.remove('hidden');"><i class="las la-times"></i></span></div>
 			<span style="height:5px;display:block;"></span>
 			<div id="userList">
 			</div>
 		</div>
+		
 		<div id="signalMeterTemplate" class="signal-meter hidden" data-cpu="0" data-level="0">
 			<i class="las la-signal"></i>
 			<i class="las la-fire-alt"></i>
@@ -2207,13 +2281,13 @@
 		</div>
 		<div id="voiceMeterTemplate2" class="video-meter2 hidden">
 		</div>
-		<div id="muteStateTemplate" style="display:none;" class="video-mute-state">
+		<div id="muteStateTemplate" class="hidden video-mute-state">
 			<i class="las la-microphone-slash"></i>
 		</div>
-		<div id="videoMuteStateTemplate" style="display:none;" class="video-mute-state">
+		<div id="videoMuteStateTemplate" class="hidden video-mute-state">
 			<i class="las la-video-slash"></i>
 		</div>
-		<div id="raisedHandTemplate" style="display:none;" class="video-mute-state raisedHand">
+		<div id="raisedHandTemplate" class="hidden video-mute-state raisedHand">
 			<i class="las la-hand-paper"></i>
 		</div>
 		<div id="selectImageTFLITE_contents" style="display:flex;overflow-x:auto;" class="hidden">
@@ -2240,7 +2314,7 @@
 			</div>
 		</div>
 		<div id="messagePopup" class="popup-message"></div>
-		<div id="languages" class="popup-message" style="display: none; right: 0; bottom: 25px; position: absolute;">
+		<div id="languages" style="right: 20px; bottom: 30px; display:none;" class="popup-message" style="display: none;">
 			<b data-translate='available-languages'>Available Languages:</b>
 			<br />
 			<ul id="languagesList" style="list-style-type: none; margin: 0;">
@@ -2261,24 +2335,27 @@
 				<li><a onclick="changeLg('eu');toggle(document.getElementById('languages'));" style="cursor: pointer;" data-tz="Europe/Euskara">Basque</a></li>
 				<li><a onclick="changeLg('pig');toggle(document.getElementById('languages'));" style="cursor: pointer;">Pig Latin</a></li>
 			</ul>
-			<br />
-			<a href="https://github.com/steveseguin/vdoninja/tree/master/translations" style='color:#333;font-style: italic;' target="_blank" rel="noopener noreferrer" data-translate='add-more-here'>Add More Here!</a>
+			<br style="line-height: 0.3;" />
+			<i class="las la-exclamation-circle"></i><a href="https://github.com/steveseguin/vdoninja/tree/master/translations" target="_blank" rel="noopener noreferrer" data-translate='add-more-here'>Add More Here!</a>
 			<br />
 		</div>
-		<div id="calendar" class="popup-message" style="display: none; right: 0; padding-left:5px; bottom: 25px; position: absolute;">
+		<div id="calendar" style="right: 20px; bottom: 30px;display:none;" class="popup-message" >
 			<b  data-translate='add-to-calendar'>Add details to your Calendar:</b>
 			<br />
 			<u>
 				<br />
 				<a onclick="addToGoogleCalendar();" style="cursor: pointer;" data-translate='add-to-google-calendar'>Add to Google Calendar</a>
-				<br />
 				<a onclick="addToOutlookCalendar();" style="cursor: pointer;" data-translate='add-to-outlook-calendar'>Add to Outlook Calendar</a>
-				<br />
 				<a onclick="addToYahooCalendar();" style="cursor: pointer;" data-translate='add-to-yahoo-calendar'>Add to Yahoo Calendar</a>
-				<br />
 				<br />
 			</u>
 		</div>
+		<span class="hidden" id="hangupTemplate">
+			<span style='font-size:500%;text-align:center;margin:auto;'>👋<br><button onClick='parent.location.reload();' title="Reload the page" data-translate="reload-page">Refresh</button></span>
+		</span>
+		<span class="hidden" id="hangupTemplateMobileFullscreen">
+			<span style='font-size:500%;text-align:center;margin:auto;'>👋<br><button onClick='parent.location.reload();' title="Reload the page" data-translate="reload-page">Refresh</button></span>
+		</span>
 		<div id="meshcastMenu" class="hidden">
 			Meshcast publishing region: <select name="edgelist" id="edgelist" onchange="selectMeshcast(this);" title="Select a location that is closest to both you and your audience."></select>
 		</div>
@@ -2294,13 +2371,13 @@
 
 		
 			var session = WebRTC.Media; // session is a required global variable if configuring manually. Run before loading main.js but after webrtc.js.
-			session.version = "23.2b";
+			session.version = "23.4";
 			session.streamID = session.generateStreamID(); // randomly generates a streamID for this session. You can set your own programmatically if needed
 			
 			session.defaultPassword = "someEncryptionKey123"; // Change this password if self-deploying for added security/privacy
 			// session.salt = location.hostname; // used only if password is not == False. You can change to "session.salt = location.hostname+location.pathname;" for greater deployment isolation
 			
-			session.stunServers = [{ urls: ["stun:stun.l.google.com:19302", "stun:stun4.l.google.com:19302"]}]; // google stun servers. default
+			session.stunServers = [{ urls: ["stun:stun.l.google.com:19302", "stun:stun.cloudflare.com:3478"]}]; // google + cloudflare stun servers. default
 			
 			///////////////  ------  Custom basic TURN SETUP SECTION STARTS Here --------
 			// session.configuration = {         // uncomment to disable the default usage of the vdo.ninja turn servers.
@@ -2407,11 +2484,11 @@
 			// session.hidehome = true; // If used, 'hide home' will make the landing page inaccessible, along with hiding a few go-home elements.
 			// session.record = false; // uncomment to block users from being able to record via vdo.ninja's built in recording function
 		</script>
-		<script type="text/javascript" crossorigin="anonymous" id="lib-js" src="./lib.js?ver=666"></script>
+		<script type="text/javascript" crossorigin="anonymous" id="lib-js" src="./lib.js?ver=807"></script>
 		<!-- 
 		// If you wish to change branding, blank offers a good clean start.
 		<script type="text/javascript" id="main-js" src="./main.js" data-translation="blank"></script>
 		-->
-		<script type="text/javascript" crossorigin="anonymous" id="main-js" src="./main.js?ver=549"></script>
+		<script type="text/javascript" crossorigin="anonymous" id="main-js" src="./main.js?ver=633"></script>
 	</body>
 </html>

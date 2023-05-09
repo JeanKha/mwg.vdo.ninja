@@ -639,7 +639,7 @@
 	}
 	.close-btn {
 	  color: #333;
-	  font-size: 24px;  
+	  font-size: 42px;  
 	  font-weight: bold;
 	  user-select: none;
 	}
@@ -930,7 +930,7 @@
 				<div>
 					<a class="github" href="https://github.com/steveseguin/vdoninja" rel="noopener" target="_blank" title="Star steveseguin/vdoninja on GitHub"></a>
 				</div>
-				<div style="cursor:pointer;" onclick="window.open('https://vdo.ninja');">Powered by VDO.Ninja</div>
+				<div style="cursor:pointer;" onclick="window.open('https://vdo.ninja');">Powered by VDO.Ninja (v23)</div>
 			</div>
 		</div>
 	</div>
@@ -952,7 +952,7 @@
 	<div id='sceneSettings' class="hidden modal">
 		<div class="modal-content">
 			<span class="close-btn">&times;</span>
-			<h2>General Settings</h2>
+			<h2>General Mixer Settings</h2>
 			<h3>Aspect Ratio</h3>
 			<input type="checkbox" checked class="aspectbutton" data-value="169"  onchange="changeAspectRatio(16/9.0, this);">16:9
 			<input type="checkbox" class="aspectbutton" data-value="0.5625" onchange="changeAspectRatio(9.0/16, this);">9:16
@@ -969,8 +969,12 @@
 			
 			<h3>Layout switching</h3>
 			<input type="checkbox" title="When a user is assigned a slot or switches slots, the last active layout is re-applied automatically" id="updateOnSlotChange" checked onchange="submitChange(this)";>Update layout on a slot change
-			<h3>Linked OBS scenes</h3>
-			<input type="checkbox" title="When a user is assigned a slot or switches slots, the last active layout is re-applied automatically" id="syncOBS" onchange="submitChange3(this)";>Activate linked OBS scene on layout change
+			
+			<h3>Trigger OBS scenes change on layout change</h3>
+			<input type="checkbox" title="" id="syncOBS" onchange="submitChange3(this)";>Activate linked OBS scene on layout change
+			<h3>Switch layouts to match selected OBS scene</h3>
+			<input type="checkbox" title="" id="remoteSyncOBS" onchange="submitChange5(this)";>Activate the linked layout on remote OBS scene change
+			
 			<h3>Slot assignment</h3>
 			<input type="checkbox" title="A guest is assigned a slot when they join, automatically. If disabled, they must be assigned a slot manually." id="assignSlotToGuest" checked onchange="submitChange2(this)";>Assign a slot to new guests automatically
 			<h3>Show advanced controls</h3>
@@ -1158,7 +1162,10 @@
 	var messageList = [];
 	var password = false;
 	var syncOBS = false;
+	var remoteSyncOBS = false;
 	var showDirector = true;
+	
+	var currentOBSState = false;
 	
 	if (urlParams.has('password') || urlParams.has('pass') || urlParams.has('pw') || urlParams.has('p')) {
 		password = urlParams.get('password') || urlParams.get('pass') || urlParams.get('pw') || urlParams.get('p');
@@ -1755,6 +1762,18 @@
 			}
 		}
 		
+		if (savedSession.settings && ("remoteSyncOBS" in savedSession.settings)){
+			remoteSyncOBS = savedSession.settings.remoteSyncOBS;
+			if (!remoteSyncOBS){
+				getById("remoteSyncOBS").value = "off";
+				getById("remoteSyncOBS").checked = false;
+				getById("remoteSyncOBS").removeAttribute('checked');
+			} else {
+				getById("remoteSyncOBS").value = "on";
+				getById("remoteSyncOBS").checked = true;
+			}
+		}
+		
 		if (savedSession.settings && ("showDirector" in savedSession.settings)){
 			showDirector = savedSession.settings.showDirector;
 			if (!showDirector){
@@ -1874,7 +1893,11 @@
 	}
 	
 	if (iframe){
-		iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+		if (remoteSyncOBS){
+			iframe.contentWindow.postMessage({ layouts: savedSession.layouts , obsSceneTriggers: savedSession.obsScenes}, "*"); 
+		} else {
+			iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+		}
 	}
 	
 	var guestPositions = {};
@@ -1907,6 +1930,22 @@
 		} else { // do not assign guests to slots automatically
 			element.removeAttribute('checked');
 			syncOBS=false
+		}
+		saveSession();
+	}
+	
+	function submitChange5(element){
+		if (element.checked){
+			remoteSyncOBS=true;
+			if (iframe){
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts , obsSceneTriggers: savedSession.obsScenes}, "*"); 
+			}
+		} else { // do not assign guests to slots automatically
+			if (iframe){
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts , obsSceneTriggers: false}, "*"); 
+			}
+			element.removeAttribute('checked');
+			remoteSyncOBS=false
 		}
 		saveSession();
 	}
@@ -2224,7 +2263,7 @@
 			additional2+="&showdirector";
 		}
 		
-		var iframesrc = "./index.html?ltb=350&sstype=3&transparent&hideheader&hidetranslate&cleandirector&chatbutton=0&director="+roomname+additional+additional2+"&b64css="+injectCSS;
+		var iframesrc = "./index.html?ltb=350&transparent&hideheader&hidetranslate&cleandirector&chatbutton=0&director="+roomname+additional+additional2+"&b64css="+injectCSS;
 		
 		var params = window.location.search || "";
 		
@@ -2268,12 +2307,7 @@
 		<!-- button.classList.add("menuButton"); -->
 		<!-- document.getElementById("sources").appendChild(button); -->
 		
-		var button = document.createElement("button");
-		button.innerHTML = "Settings ⚙︎"; 
-		button.onclick = showSettings;
-		button.id = "showSettings";
-		button.classList.add("menuButton");  
-		document.getElementById("sources").appendChild(button);
+		
 		
 		var button = document.createElement("button");
 		button.innerHTML = "Switch Modes &#x21bb;"; 
@@ -2285,7 +2319,7 @@
 			this.state = !this.state; 
 			this.dataset.state = this.state;
 			
-			iframe.contentWindow.postMessage({"previewMode":this.state, "layout":currentLayout, "bitrate":35, "target": "*"}, '*');
+			iframe.contentWindow.postMessage({"previewMode":this.state, "layout":currentLayout, "target": "*"}, '*');
 			if (this.state){
 				this.innerHTML = "Director View &#x21bb;"; 
 				iframe.classList.add("aspectRatio");
@@ -2301,6 +2335,12 @@
 		};
 		document.getElementById("sources").appendChild(button);
 		
+		var button = document.createElement("button");
+		button.innerHTML = "Mixer Settings ⚙︎"; 
+		button.onclick = showSettings;
+		button.id = "showSettings";
+		button.classList.add("menuButton");  
+		document.getElementById("sources").appendChild(button);
 		
 		var button = document.createElement("button");
 		button.innerHTML = "Add Stream ID"; 
@@ -2346,7 +2386,7 @@
 		
 		var a = document.createElement("a");
 		a.innerHTML = "Invite Guest Link 📎"; 
-		a.href = "./?room="+roomname+"&sstype=3&broadcast"+additional;
+		a.href = "./?room="+roomname+"&broadcast"+additional;
 		a.target = "_blank";
 		a.onclick = function(evt){copyFunction(this, evt);};
 		document.getElementById("sources").appendChild(a);
@@ -2380,7 +2420,11 @@
 		document.getElementById("chatModule").classList.remove("hidden");
 		
 		iframe.onload = function(){
-			iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+			if (remoteSyncOBS){
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts , obsSceneTriggers: savedSession.obsScenes}, "*"); 
+			} else {
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+			}
 		}
 		
 		iframe.src = iframesrc;
@@ -2421,29 +2465,6 @@
 					changeAspectRatio(aspectRatio,false);
 				}
 				
-				///var outputWindow = document.createElement("div");
-				//outputWindow.innerHTML = "event: "+e.data.action+"<br />";
-				//outputWindow.style.border="1px dotted black";
-				//iframeContainer.appendChild(outputWindow);
-				//console.log(e.data.action);
-				<!-- if (e.data.action === "view-connection"){ -->
-					<!-- if (e.data.value){ -->
-						<!-- iframe.contentWindow.postMessage({"getStreamIDs":true}, '*'); -->
-					<!-- } else if (e.data.streamID){ -->
-						<!-- for (var i = 0; i < streamIDs.length; i++){  -->
-							<!-- if (e.data.streamID == streamIDs[i]){ -->
-								<!-- streamIDs.splice(i,1); -->
-								<!-- if (document.getElementById("sid_"+e.data.streamID)){ -->
-									<!-- document.getElementById("sid_"+e.data.streamID).classList.add("disconnected"); -->
-									<!-- document.getElementById("sid_"+e.data.streamID).title = "Not currently connected, but can still be placed"; -->
-								<!-- } -->
-							<!-- } -->
-						<!-- } -->
-						<!-- updateList(e.data.streamID); -->
-					<!-- } -->
-				<!-- } -->
-				
-				// view-connection
 				
 				if (e.data.action === "slot-updated"){
 					for (var i in guestPositions){
@@ -2456,61 +2477,119 @@
 						remoteActivate(false, lastLayoutRaw);
 					}
 				}
-			}
 			
 			
-			if (e.data.action && (e.data.action == "scene-connected")){
-				if (lastLayout && lastLayout.scene == e.data.value){
-					var layoutIssue = {};
-					layoutIssue.layout = lastLayout.layout;
-					if (e.data.UUID){
-						layoutIssue.UUID = e.data.UUID;
+				if (e.data.action === "layout-index"){
+					if ("value" in e.data){
+						var idx = parseInt(e.data.value) || 0;
+						if (!idx){
+							var ele = document.getElementById("automix");
+						} else {
+							var ele = document.querySelectorAll("#containermenu .canvasContainer")[idx-1];
+						}
+						
+						var layoutButtons = document.querySelectorAll(".pressed");
+						for (var i = 0;i<layoutButtons.length;i++){
+							layoutButtons[i].classList.remove("pressed");
+						}
+						if (ele){
+							ele.classList.add("pressed");
+							ele.classList.add("shake");
+							setTimeout(function(ele){ele.classList.remove("shake");},500,ele);
+						}
+						
 					}
-					layoutIssue.scene = lastLayout.scene
-					iframe.contentWindow.postMessage(lastLayout, '*');
 				}
-			}
-			
-			if (e.data.action && (e.data.action == "guest-connected")){
-				if (lastLayout){
-					var layoutIssue = {};
-					layoutIssue.layout = lastLayout.layout;
-					if (e.data.UUID){
-						layoutIssue.UUID = e.data.UUID;
+				
+				if (e.data.action && (e.data.action == "scene-connected")){
+					if (lastLayout && lastLayout.scene == e.data.value){
+						var layoutIssue = {};
+						layoutIssue.layout = lastLayout.layout;
+						if (e.data.UUID){
+							layoutIssue.UUID = e.data.UUID;
+						}
+						layoutIssue.scene = lastLayout.scene
+						iframe.contentWindow.postMessage(lastLayout, '*');
 					}
-					iframe.contentWindow.postMessage(lastLayout, '*');
 				}
-			}
-			
-			if (e.data.action && (e.data.action == "view-connection")){
-				if (!e.data.value && e.data.streamID){
-					
-					for (var i in guestPositions){
-						if (guestPositions[i] === e.data.streamID){
-							delete guestPositions[i];
+				
+				if (e.data.action && (e.data.action == "guest-connected")){
+					if (lastLayout){
+						var layoutIssue = {};
+						layoutIssue.layout = lastLayout.layout;
+						if (e.data.UUID){
+							layoutIssue.UUID = e.data.UUID;
+						}
+						iframe.contentWindow.postMessage(lastLayout, '*');
+					}
+				}
+				
+				if (e.data.action && (e.data.action == "view-connection")){
+					if (!e.data.value && e.data.streamID){
+						
+						for (var i in guestPositions){
+							if (guestPositions[i] === e.data.streamID){
+								delete guestPositions[i];
+							}
+						}
+						
+						if (updateOnSlotChange){
+							remoteActivate(false, lastLayoutRaw);
 						}
 					}
-					
-					if (updateOnSlotChange){
-						remoteActivate(false, lastLayoutRaw);
-					}
-					
 				}
-			}
-			
-			if (e.data.action && (e.data.action == "director-share")){
-				if (!e.data.value && e.data.streamID){
-					for (var i in guestPositions){
-						if (guestPositions[i] === e.data.streamID){
-							delete guestPositions[i];
+				
+				if (e.data.action && (e.data.action == "director-share")){
+					if (!e.data.value && e.data.streamID){
+						for (var i in guestPositions){
+							if (guestPositions[i] === e.data.streamID){
+								delete guestPositions[i];
+							}
+						}
+						if (updateOnSlotChange){
+							remoteActivate(false, lastLayoutRaw);
 						}
 					}
-					if (updateOnSlotChange){
-						remoteActivate(false, lastLayoutRaw);
+				}
+				
+				if (e.data.action == "obs-state"){
+					if (e.data.value && e.data.value.details){
+						currentOBSState = e.data.value.details;
+						
+						if (currentOBSState.currentScene && currentOBSState.currentScene.name){
+							console.log("Current OBS scene: " + currentOBSState.currentScene.name);
+							
+							if (remoteSyncOBS){
+								var layouts = document.querySelectorAll(".canvasContainer>canvas");
+								for (var i=0;i<layouts.length;i++){
+									if (!layouts[i].layout){
+										console.log("no layout");
+										continue;
+									}
+									try {
+										var obs = layouts[i].obsSceneName || false;
+										console.log("obs scene names:"+obs+ " vs "+currentOBSState.currentScene.name);
+										if (obs && obs.toLowerCase().trim() == currentOBSState.currentScene.name.toLowerCase().trim()){
+											if (layouts[i].parentNode && layouts[i].parentNode.classList.contains("pressed")){
+												console.log("Matched scene already active");
+											} else {
+												console.log("Syncing with OBS; matched");
+												layouts[i].click(); // triggers for everyone else.
+											}
+											break;
+										}
+									} catch(e){
+										errorlog(e);
+									}
+								}
+							}
+						} else {
+							console.log("No current scene in OBS's output");
+						}
 					}
 				}
-			}
 			
+			}
 			<!-- if ("streamIDs" in e.data){ -->
 				<!-- streamIDs = []; -->
 				<!-- for (var key in e.data.streamIDs){ -->
@@ -2913,6 +2992,7 @@
 		container.classList.add("inline");
 		//container.classList.add("canvasContainer");
 		container.appendChild(canvas);
+		container.id = "automix"
 		document.getElementById("containermenu").appendChild(container);
 		ctx.beginPath();
 		ctx.rect(0, 0, 80, 45);
@@ -3609,7 +3689,7 @@
 	
 	function setobsSceneName(){
 		var obsSceneName = document.getElementById("canvas").obsSceneName || "";
-		var input = prompt("Enter the OBS scene you want to trigger\n\n(To use, also be sure to enable this feature in the mixer settings and enable permissions in the OBS browser source)", obsSceneName);
+		var input = prompt("Enter the OBS scene you want to link this scene to.\n\nWhen changing layouts it will auto-select the linked OBS scene, and vice versas.\n\nTo activate the syncing you also need to enable this feature in the mixer settings and enable permissions in the OBS browser source.", obsSceneName);
 		if (input !==null){
 			document.getElementById("canvas").obsSceneName = input;
 		}
@@ -3723,6 +3803,7 @@
 		savedSession.settings.toggleLabel = toggleLabel;
 		savedSession.settings.toggleBroadcast = toggleBroadcast;
 		savedSession.settings.syncOBS = syncOBS;
+		savedSession.settings.remoteSyncOBS = remoteSyncOBS;
 		savedSession.settings.aspectRatio = aspectRatio;
 		savedSession.settings.pixelDensity = pixelDensity;
 		savedSession.settings.absolutePixel = absolutePixel;
@@ -3746,7 +3827,11 @@
 		setStorage("savedSession", JSON.stringify(savedSession));
 		
 		if (iframe){
-			iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+			if (remoteSyncOBS){
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts , obsSceneTriggers: savedSession.obsScenes}, "*"); 
+			} else {
+				iframe.contentWindow.postMessage({ layouts: savedSession.layouts }, "*"); 
+			}
 		}
 		log(getStorage("savedSession"));
 	}
