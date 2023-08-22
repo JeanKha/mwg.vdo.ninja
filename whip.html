@@ -79,7 +79,7 @@
 		width:100%;
 		background-color: #101520;
 	}
-	input.changeText {
+	.changeText {
 		font-size: 1em;
 		align-self: center;
 		width: 100%;
@@ -96,8 +96,11 @@
 		border-top-right-radius: 0;
 	}
 
-	input.changeText:focus {
+	.changeText:focus {
 		outline: none;
+	}
+	select.changetext{
+		padding: .1em;
 	}
 
 	.container{
@@ -185,6 +188,17 @@
 	div.urlInput {
 		padding: 0 0 4vh 0;
 	}
+	
+	
+	@media only screen and (max-height: 839px) {
+		body{
+			zoom: 0.74; 
+			-moz-transform: scale(0.74); 
+			-moz-transform-origin: 0 0;
+			
+		}
+	}
+	
 	@media only screen and (max-width: 940px) {
 		body{
 			zoom: 0.74; 
@@ -289,6 +303,14 @@
 	h3 {
 		color: #b0e3ff;
 	}
+	.hidden{
+		display:none;
+		opacity:0;
+		visibility:none;
+		width:0;
+		height:0
+	}
+	
 
 	</style>
 </head>
@@ -307,13 +329,60 @@
 						<input type="text" id="changeText1" class="inputfield changeText" placeholder="WHIP Publishing URL" />
 						<button  onclick="gohere1();" class="gobutton" id="gobutton1">GO</button>
 					</div>
-					<div class="inputCombo" style="width:350px;margin:10 0 10 auto;">
-						<input type="text" id="changeText1a" class="inputfield changeText" placeholder="Authentication Bearer Token (optional)" />
-						<div class="details">⚙️</div>
-					</div>
+					<div >
+						<div class="inputCombo" style="margin: 10px 0px 10px 10px;">
+							<input type="password" id="changeText1a" class="inputfield changeText" placeholder="🗝️ Authentication Bearer Token (optional)" />
+							<div class="details">⚙️</div>
+						</div>
+						
+						<div class="inputCombo" id="advanced" style="margin: 10px 0px 10px 10px;">
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="whipoutaudiobitrate"  title="Which audio bitrate target would you prefer?" >
+								<option value="0" selected>🎙️Default Audio Bitrate</option>
+								<option value="32">🎙️32-kbps</option>
+								<option value="64">🎙️64-kbps</option>
+								<option value="128">🎙️128-kbps</option>
+								<option value="256">🎙️256-kbps</option>
+							</select >
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="vbrcbr"  title="Which audio bitrate target would you prefer?" >
+								<option value="cbr" selected>🎙️CBR</option>
+								<option value="vbr">🎙️VBR</option>
+							</select >
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="denoise"  title="Which audio bitrate target would you prefer?" >
+								<option value="1" selected>🎙️Denoise On</option>
+								<option value="0">🎙️Denoise Off</option>
+							</select >
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="autogain"  title="Which audio bitrate target would you prefer?" >
+								<option value="1" selected>🎙️Auto Gain On</option>
+								<option value="0">🎙️Auto Gain Off</option>
+							</select >
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="stereo"  title="Which audio bitrate target would you prefer?" >
+								<option value="1" selected>🎙️Stereo</option>
+								<option value="0">🎙️Mono</option>
+							</select >
+						</div>
+						<div class="inputCombo" id="advanced2" style="margin: 10px 0px 10px 10px;">
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="bitrateGroupFlag" title="Which video bitrate target would you prefer?" >
+								<option value="0" selected>🎦Default Video Bitrate</option>
+								<option value="500">🎦500-kbps</option>
+								<option value="2500">🎦2500-kbps</option>
+								<option value="6000">🎦6000-kbps</option>
+								<option value="20000">🎦20000-kbps</option>
+							</select >
+							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText"  id="codecGroupFlag"  title="Which video codec would you prefer to be used if available?" >
+								<option value="default" selected>🎦OpenH264</option>
+								<option value="vp9">🎦VP9</option>
+								<option value="h264">🎦H264</option>
+								<option value="vp8">🎦VP8</option>
+								<option value="av1">🎦AV1</option>
+							</select >
+							
+						</div>
+						
+						
+					</div>	
 				</div>
 				
-				<div id="urlInput1" class="urlInput" title="Put the link you want to load here">
+				<div id="urlInput1a" class="urlInput" title="Put the link you want to load here">
 					
 					<h3>Publish a video from VDO.Ninja to your Twitch channel</h3>
 					
@@ -321,7 +390,7 @@
 						<label for="changeText">
 							<i class="las la-upload"></i>
 						</label>
-						<input type="text" id="changeText1t" class="inputfield changeText" placeholder="Enter your Twitch stream token here" />
+						<input type="password" id="changeText1t" class="inputfield changeText" placeholder="Enter your Twitch stream token here" />
 						<button  onclick="gohere1t();" class="gobutton" id="gobutton1t">GO</button>
 					</div>
 				</div>
@@ -353,7 +422,9 @@
 					</div>
 				</div>
 				
-				<div id="urlInput4" style="display:none;"  class="urlInput" title="Put the link you want to load here">
+				<div id="urlInput4" class="urlInput" title="Put the link you want to load here">
+					
+					<h3>Host a stream as a WHEP source  🚧</h3>
 					
 					<div  class="inputCombo" id="inputCombo4">
 					<label for="changeText">
@@ -365,6 +436,7 @@
 				</div>
 				
 				<div id="history" title="History of past links used. You can clear this history using the button to the left">
+					<h3 style='cursor:pointer;' onclick="resetHistory()">Clear History</h3>
 					<label for="lastUrls" onclick="resetHistory()">
 						<i class="las la-history"></i>
 					</label>
@@ -381,22 +453,52 @@ document.querySelector("#changeText2").value = localStorage.getItem('changeText2
 document.querySelector("#changeText3").value = localStorage.getItem('changeText3') || "";
 
 function gohere1(){
-	if (document.getElementById('changeText1').value && document.getElementById('changeText1a').value){
+	if (document.getElementById('changeText1').value){
 		localStorage.setItem('changeText1', document.getElementById('changeText1').value);
-		localStorage.setItem('changeText1a', document.getElementById('changeText1a').value);
-		window.location = domain + "?push&whippush=" + encodeURIComponent(document.getElementById('changeText1').value) + "&whippushtoken=" + document.getElementById('changeText1a').value;
-	} else if (document.getElementById('changeText1').value){
-		localStorage.setItem('changeText1', document.getElementById('changeText1').value);
-		localStorage.setItem('changeText1a', "");
-		window.location = domain + "?push&whippush=" + encodeURIComponent(document.getElementById('changeText1').value);
+		localStorage.setItem('changeText1a', document.getElementById('changeText1a').value || "");
+		
+		localStorage.setItem('bitrateGroupFlag', document.getElementById('bitrateGroupFlag').value);
+		localStorage.setItem('codecGroupFlag', document.getElementById('codecGroupFlag').value);
+		
+		localStorage.setItem('whipoutaudiobitrate', document.getElementById('whipoutaudiobitrate').value);
+		localStorage.setItem('vbrcbr', document.getElementById('vbrcbr').value);
+		localStorage.setItem('autogain', document.getElementById('autogain').value);
+		localStorage.setItem('stereo', document.getElementById('stereo').value);
+		localStorage.setItem('denoise', document.getElementById('denoise').value);
+		
+		
+		var whipoutaudiobitrate = "";
+		if (parseInt(document.getElementById('whipoutaudiobitrate').value)){
+			whipoutaudiobitrate = "&whipoutaudiobitrate="+document.getElementById('whipoutaudiobitrate').value;
+		}
+		
+		var vbrcbr = "&"+document.getElementById('vbrcbr').value;
+		var autogain = "&autogain="+document.getElementById('autogain').value;
+		var stereo = "&stereo="+document.getElementById('stereo').value;
+		var denoise = "&denoise="+document.getElementById('denoise').value;
+		
+		
+		var bitrate = "";
+		if (parseInt(document.getElementById('bitrateGroupFlag').value)){
+			bitrate = "&whipoutvideobitrate="+document.getElementById('bitrateGroupFlag').value;
+		}
+		var codec = "";
+		if (document.getElementById('codecGroupFlag').value!=="default"){
+			codec = "&whipoutcodec="+document.getElementById('codecGroupFlag').value;
+		}
+		
+		if (document.getElementById('changeText1a').value){
+			window.location = domain + "?push&whippush=" + encodeURIComponent(document.getElementById('changeText1').value) + "&whippushtoken=" + document.getElementById('changeText1a').value + codec + bitrate+whipoutaudiobitrate+vbrcbr+autogain+stereo+denoise;
+		} else {
+			window.location = domain + "?push&whippush=" + encodeURIComponent(document.getElementById('changeText1').value) + codec + bitrate+whipoutaudiobitrate+vbrcbr+autogain+stereo+denoise;
+		}
 	}
-	
 }
 
 function gohere1t(){
 	if (document.getElementById('changeText1t').value){
 		localStorage.setItem('changeText1t', document.getElementById('changeText1t').value);
-		window.location = domain + "?push&whippush=https%3A%2F%2Ftwitch.vdo.ninja%2F"+ document.getElementById('changeText1t').value;
+		window.location = domain + "?whipoutvideobitrate=5800&stereo&push&whippush=https%3A%2F%2Fg.webrtc.live-video.net%3A4443%2Fv2%2Foffer&whippushtoken="+ document.getElementById('changeText1t').value;
 	}
 }
 
