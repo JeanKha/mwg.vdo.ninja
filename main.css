@@ -178,6 +178,58 @@ table {
 	position: unset;
 	position: static;
 }
+
+#progressContainer {
+    width: 100%;
+    background-color: #ddd9;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+#progressBar {
+    width: 0%;
+    height: 18px;
+    background-color: #4CAF5099;
+    text-align: left;
+    color: black;
+}
+
+select#audioSource {
+	max-height: 80px; /* Initial height */
+	overflow-y: auto; /* Enable scrolling */
+	transition: max-height 0.3s ease; /* Smooth transition for expanding and collapsing */
+	width:100%;
+	margin-top: 7px;
+	padding: 3px 4px;
+	min-height: 24px; 
+	user-select: none;
+}
+select#audioSource.expanded {
+	max-height: none;
+}
+select#audioSource.expanded option {
+    display: block;
+}
+select#audioSource option:checked {
+    display: block;
+	background-color: #1967D2!important;
+    color: white;
+}
+select#audioSource option {
+    display: none;
+}
+select#audioSource option:hover {
+    background-color: #8dbdd4!important;
+    color: black;
+}
+select#audioSource[size='1'] option {
+    background-color: var(--lighttheme-1)!important;
+	color:black;
+}
+.darktheme select#audioSource[size='1'] option {
+    background-color: var(--light-grey)!important;
+	color:black;
+}
 .paused {
 	cursor: pointer;
 }
@@ -376,6 +428,10 @@ button.hint {
 	color:#B3C7F9;
 	margin:5px;
 	cursor: pointer;
+	padding:3px;
+	background-color: black;
+    border-radius: 50%;
+	border: solid #B3C7F9 1px;
 }
 
 /* Clicked buttons overwrite */
@@ -597,13 +653,14 @@ button.hint {
 	cursor:pointer;
 }
 .overlayCloseBtn{
-	padding: 0;
-	margin: 10px;
-	width: 16px;
-	height: 16px;
-	position: relative;
-	bottom: 10px;
-	background-color: #DDDD;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    bottom: 7px;
+    padding: 18px 18px 20px 18px;
+    font-size: 22px;
+	margin-left: 20px;
 }
 
 #overlayMsgs{
@@ -727,11 +784,14 @@ body.darktheme .credits>a:visited {
 }
 
 .advancedAudioSettings .settingsLabel, .advancedVideoSettings .settingsLabel {
-	padding: 5px;
 	display: block;
-	color: white;
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	font-size: 12px;
+    color: #fff;
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,Oxygen,Ubuntu,Cantarell,open sans,helvetica neue,sans-serif;
+    font-size: 12px;
+    margin-top: 15px;
+    border-top: 3px solid #4f4c4c;
+    width: calc(100% - 4px);
+    padding: 5px 0;
 }
 
 .advancedVideoSettings div:nth-child(2) {
@@ -775,7 +835,7 @@ body.darktheme .credits>a:visited {
 	background: #BF3F3F !important;
 }
 #mainmenu.row {
-	align-content: center;
+	
 	text-align: center;
 	margin-top: 10px;
 }
@@ -805,7 +865,7 @@ hr {
 	border-radius: var(--video-rounded);
 }
 
-#gridlayout,#directorlayout {
+#gridlayout, #directorlayout {
 	padding: 0;
 	width: 100%;
 	height: 100%;
@@ -1538,6 +1598,9 @@ body {
 	opacity: 1;
 	transition: opacity .1s linear;
 	scrollbar-color:#666 #201c29;
+	display:flex;
+	flex-direction: column;
+	position: fixed;
 }
 body.darktheme{
 	background-color: var(--dark-background-color);
@@ -1606,12 +1669,21 @@ body.darktheme{
 	display: inline-block;
 	width:100%;
 }
-#welcomeImage{
-	object-fit:cover;
-	width:100%;
-	height:100%;
-	display:block;
-	z-index:10;
+.welcomeOverlay{
+	object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    left: 0;
+    z-index: 500;
+    top: 0;
+	animation: fadeIn 0.1s;
+	-webkit-animation: fadeIn  0.3s;
+	-moz-animation: fadeIn  0.3s;
+	-o-animation: fadeIn  0.3s;
+	-ms-animation: fadeIn  0.3s;
+	animation-iteration-count: 1;
 }
 div[data-action-type='toggle-group'] {
 	padding: 0 10px;
@@ -1791,32 +1863,35 @@ input[type=range].thinSlider {
 .inMessage {
 	color: #000;
 	margin: 3px;
-	border-radius: 5px;
+	border-radius: 3px;
 	background: #FFF;
 	padding: 5px;
 	text-align: left;
 	margin: 10px 3px;
+	border: 1px solid black;
 }
 .actionMessage {
 	color: #000;
 	margin: 3px;
-	border-radius: 5px;
+	border-radius: 3px;
 	background: #FFF;
 	padding: 5px;
 	text-align: left;
 	margin: 10px 3px;
+	border: 1px solid black;
 }
 .outMessage {
 	color: #000;
-	border-radius: 5px;
-	background: #BCF;
+	border-radius: 3px;
+	background: #c5d3ff;
 	padding: 5px;
 	text-align: right;
 	margin-bottom: 5px;
+	border: 1px solid black;
 }
 #chatBody {
 	z-index: 12;
-	background-color: #0004;
+	background-color: #000A;
 	width: 100%;
 	border-radius: 5px;
 	overflow-y: scroll;
@@ -1853,12 +1928,28 @@ div#chatBody a {
 	color: #000;
 	background-color: #FFFE;
 	width: calc(100% - 160px);
-	padding: 3px;
+	padding: 1px 3px;
+	font-size: 100%;
 }
 .chatBarInputButton {
 	width: 50px;
 	margin: unset;
 }
+#callerMenu {
+	position: absolute;
+    left: 0;
+    bottom: 200px;
+}
+#callerMenu button {
+	font-size: 300%;
+}
+.foregroundMedia {
+	width:100%;
+	height:100%;
+	position: relative;
+}
+
+
 
 @media only screen and (max-width: 500px) {
 	#subControlButtons {
@@ -2430,11 +2521,12 @@ span[data-action-type="stats-graphs-details-container"]>span{
 	border-radius: 4px;
 }
 .manualInput{
-	width: 55px;
+	width: 75px;
 	display: inline-block;
 	overflow: scroll;
 	margin: 4px 0 4px 4px;
 	padding: 1px 4px;
+	color:black;
 }
 
 #add_screen {
@@ -2554,6 +2646,65 @@ iframe {
 	z-index: 2;
 }
 
+
+#mutebutton.bigbutton {
+	bottom: 100px;
+	padding: 100px; 
+	position: fixed;
+	display: block;
+	box-sizing: unset;
+}
+.bigbutton #mutetoggle {
+	bottom: 20px;
+	right: 0;
+	top: unset;
+}
+.bigbutton .bigbuttontext {
+	border-radius: 0;
+	margin: 3px;
+	display:block;
+	font-size:200%;
+}
+
+@media only screen and (max-height: 600px) {
+	.bigbutton {
+		padding: 80px;
+	}
+}
+@media only screen and (max-width: 600px) {
+	.bigbutton {
+		padding: 80px;
+	}
+}
+@media only screen and (max-height: 500px) {
+	.bigbutton {
+		bottom: 80px;
+		padding: 70px;
+	}
+}
+@media only screen and (max-width: 500px) {
+	.bigbutton {
+		padding: 70px;
+	}
+}
+@media only screen and (max-height: 400px) {
+	.bigbutton {
+		padding: 60px;
+		bottom: 50px;
+	}
+}
+@media only screen and (max-width: 300px) {
+	.bigbutton {
+		padding: 60px;
+	}
+}
+@media only screen and (max-height: 300px) {
+	.bigbutton {
+		bottom: 40px;
+		padding: 50px;
+	}
+}
+
 @media only screen and (max-width: 390px) {
 	#translateButton {
 		display:none;
@@ -2669,14 +2820,19 @@ img {
 	padding:2px 5px;
 	color: white;
 	z-index:2;
+	margin:0 auto;
 	background-color: #222D;
-	display: block;
-	top: 0;
-	position: fixed;
-	opacity: 0.7;
-	font-size: 11px;
+	display: inline-block;
+	opacity: 0.8;
 	border-radius: 4px;
 	text-align: center;
+	
+    position: absolute;
+    top: 0;
+	left: 50%;
+    transform: translateX(-50%);
+	transform-origin: top center;
+	
 }
 #obsState.larger {
 	padding:2px 10px;
@@ -2685,30 +2841,30 @@ img {
 
 @media only screen and (max-height: 400px){
 	#obsState {
-		transform: scale(0.9);
+		transform: translateX(-50%) scale(0.8);
 	}
 }
 @media only screen and (max-height: 300px){
 	#obsState {
-		transform: scale(0.8);
+		transform: translateX(-50%) scale(0.7);
 	}
 }
 @media only screen and (max-width: 620px){
 	#obsState {
 		top:20px;
-		transform: scale(0.8);
+		transform: translateX(-50%) scale(0.7);
 	}
 }
 @media only screen and (max-height: 200px){
 	#obsState {
-		transform: scale(0.7);
+		transform: translateX(-50%) scale(0.6);
 	}
 }
 
 @media only screen and (max-width: 400px){
 	#obsState {
 		top:30px;
-		transform: scale(0.7);
+		transform: translateX(-50%) scale(0.6);
 		display:none!important;
 		opacity:0;
 	}
@@ -2719,6 +2875,10 @@ img {
 		opacity:0;
 	}
 }
+
+#obsState.noheader{
+	top:0px;
+}
 .onair {
 	box-shadow: inset 0 0 max(10vw, 10vh) green;
 }
@@ -2726,6 +2886,7 @@ img {
 .ondeck {
 	display: block !important;
 	box-shadow: inset 0 0 max(10vw, 10vh) yellow;
+	color: black!important;
 }
 
 .recording{
@@ -2928,6 +3089,12 @@ audio.fileshare::-webkit-media-controls-play-button, video.fileshare::-webkit-me
 
 video::-webkit-media-controls-panel {
 	background-color: #0000;
+}
+
+#main.forcecontrols video::-webkit-media-controls-panel {
+	opacity: 1 !important;
+    visibility: visible !important;
+	display: flex !important;
 }
 
 .mirrorControl::-webkit-media-controls-enclosure {
@@ -3137,6 +3304,13 @@ video::-webkit-media-controls-panel {
 }
 
 .hidden {
+	display: none !important;
+	visibility: hidden;
+	width: 0px;
+	height: 0px;
+	opacity: 0;
+}
+.hidden2 {
 	display: none !important;
 	visibility: hidden;
 	width: 0px;
@@ -3519,6 +3693,7 @@ div#roomnotes2 {
 .controlsGrid button[data-action-type="remote-global-record"] i,
 .controlsGrid button[data-action-type="local-global-record"] i,
 .controlsGrid button[data-action-type="recorder-local"] i,
+.controlsGrid button[data-action-type="recorder-google-drive-remote"] i,
 .controlsGrid button[data-action-type="recorder-remote"] i {
 	color: #e30000;
 }
@@ -3708,7 +3883,20 @@ div#roomnotes2 {
 	background-color: var(--discord-grey-3);
 	color: var(--discord-text);
 }
-
+#hangupContainer {
+	font-size: 500%;
+    text-align: center;
+    margin: auto auto;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
 .controlCenterBox .flexBreak span {
 	position: absolute;
 	top: 50%;
@@ -3910,6 +4098,30 @@ a#reshare {
 	pointer-events:none;
 }
 
+.video-label>span:nth-child(2) {
+    font-size: 50%;
+    display: block;
+    text-align: center;
+}
+.video-label>span:nth-child(3) {
+    font-size: 25%;
+    display: block;
+    text-align: center;
+	line-height: 200%;
+}
+.video-label>span:nth-child(4) {
+    font-size: 25%;
+    display: block;
+    text-align: center;
+	line-height: 200%;
+}
+.video-label>span:nth-child(5) {
+    font-size: 25%;
+    display: block;
+    text-align: center;
+	line-height: 200%;
+}
+
 .video-label.zoom {
 	bottom: 0;
 	left: 0;
@@ -3954,6 +4166,17 @@ a#reshare {
 	letter-spacing: 3;
 	box-shadow: 0px 0px 10px #00000059;
 	font-size: 0.7em
+}
+
+.video-label.rounded {
+    bottom: 0;
+    background: rgb(0 0 0 / 70%);
+    padding: 0px 27px;
+    left: 0;
+    border-top-right-radius: 20px;
+    box-shadow: 0px 0px 10px #00000059;
+    font-size: 0.7em;
+    font-weight: bold;
 }
 
 .video-label.fire {
@@ -4722,6 +4945,8 @@ input:checked + .slider:before {
 	content: "\f714"; }
 .la-hand-paper:before {
 	content: "\f256"; }
+.la-phone-slash:before {
+	content: "\f3dd;"; }
 .la-dot-circle:before {
 	content: "\f192"; }
 .la-bug:before {
@@ -5192,7 +5417,7 @@ input[type='checkbox'], input[type='radio'] {
 	border: 1px solid var(--discord-grey-8);
 }
 .darktheme .largeDarkIcon{
-	color: var(--dark-background-color);
+	color: var(--dark-background-color)!important;
 }
 #addPasswordBasic,
 #avatarDiv,

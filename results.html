@@ -67,6 +67,7 @@
 				Video and stream quality check results
 			</h1>
 			<div id="container">
+				<h3><blink><span style='color:#85c0ff'>RESULTS ARE LOADING...</span></blink><h3>
 			</div>
 			<div id="graphs">
 				<div class="graph">
@@ -94,7 +95,7 @@
 
 		<script>
 		
-			function getChromeVersion() {
+			function getChromiumVersion() {
 				var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
 				return raw ? parseInt(raw[2], 10) : false;
 			}
@@ -233,6 +234,7 @@
 			var PAKCCC = 0;
 			
 			function process(arr) {
+				var maxResolution = "0 x 0";
 				console.log(arr);
 				arr.forEach(data=>{
 					if ("bitrate" in data){
@@ -262,6 +264,20 @@
 					if (data.timestart){
 						document.getElementById("details").innerHTML += "<br /><b>Test start time:</b> "+timeConverter(data.timestart)+"<br />";
 					}
+					if ("peakhour" in data){
+						if (!data.peakhour){
+							document.getElementById("details").innerHTML += "<small><i>(This test was completed outside of peak streaming hours.</br>Results are normally worse during peak hours.)</i></small><br />";
+
+						}
+					}
+					
+					if (("hostMode" in data) && ("srflxMode" in data)){
+						if (!data.hostMode && !data.srflxMode){
+							
+							document.getElementById("details").innerHTML += "<h3><span style='color:#fb4949'>WARNING: </span>Connection will be relayed via TURN server</h3>";
+							document.getElementById("details").innerHTML += "<u>No host or SRFLX ICE candidates collected. The browser or extension is likely blocking IP leaks</u><br />";
+						}
+					}
 					
 					if (data.summary){
 						if (data.summary.download && data.summary.upload){
@@ -269,12 +285,17 @@
 							document.getElementById("details").innerHTML += "<br /><b>Max Upload bandwidth:</b> "+parseInt(data.summary.upload/(1024*1024))+"-mbps<br />";
 						}
 					}
-					if (data.scores && data.scores.gaming && data.scores.gaming.classificationName && data.scores.rtc && data.scores.rtc.classificationName && data.scores.streaming && data.scores.streaming.classificationName){
-						document.getElementById("details").innerHTML += "<br /><b>Gaming:</b> "+data.scores.gaming.classificationName+", <b>RTC:</b> "+data.scores.rtc.classificationName+", <b>Streaming:</b> "+data.scores.streaming.classificationName+"<br />";
-					}
+					//if (data.scores && data.scores.gaming && data.scores.gaming.classificationName && data.scores.rtc && data.scores.rtc.classificationName && data.scores.streaming && data.scores.streaming.classificationName){
+					//	document.getElementById("details").innerHTML += "<br /><b>Gaming:</b> "+data.scores.gaming.classificationName+", <b>RTC:</b> "+data.scores.rtc.classificationName+", <b>Streaming:</b> //"+data.scores.streaming.classificationName+"<br />";
+					//}
 					
 					if ("resolution" in data){
-						updateData("resolution", data.resolution);
+						try {
+							if (parseInt(data.resolution.split("x ")[1])>parseInt(maxResolution.split("x ")[1])){
+								maxResolution = data.resolution;
+							}
+						} catch(e){}
+						//updateData("resolution", data.resolution);
 					}
 					
 					if ("QLR" in data){
@@ -310,6 +331,7 @@
 						if (data.info.CPU){
 							document.getElementById("details").innerHTML += "<br /><b>CPU:</b> "+data.info.CPU+"<br />";
 						}
+						
 						if (data.info.conn_type){
 							document.getElementById("details").innerHTML += "<br /><b>Connection type:</b> "+data.info.conn_type+"<br />";
 							if (data.info.conn_type == "wifi"){
@@ -318,8 +340,20 @@
 							
 						}
 					}
+					if (data.encoder){
+						if (data.encoder.toLowerCase() == "libvpx"){
+							document.getElementById("details").innerHTML += "<br /><b>Default video codec used:</b> VP8<br />";
+						} else {
+							document.getElementById("details").innerHTML += "<br /><b>Default video codec used:</b> "+data.encoder.toUpperCase()+"<br />";
+						}
+					}
 				});
 				// container
+				
+				if (maxResolution){
+					document.getElementById("details").innerHTML += "<br /><b>Highest video resolution reached:</b> "+maxResolution+"<br />";
+				}
+				
 				
 				var total = QLR_1 + QLR_2 + QLR_3;
 				if (QLR_2/total>0.5){
@@ -336,7 +370,7 @@
 				document.getElementById("container").innerHTML += "The average video bitrate was: "+parseInt(BBB/counter)+"-kbps<br />";
 		
 				if (BBB/counter<500){
-					document.getElementById("container").innerHTML += "<small><i>Did they select an active camera?</i></small><h3>Bitrate is really bad</h3>";
+					document.getElementById("container").innerHTML += "<small><i>Did they select an active camera?</i></small><h3>Bitrate is really <span style='color:#fb4949'>bad<span></h3>";
 				}
 				else if (BBB/counter<1000){
 					document.getElementById("container").innerHTML += "<h3>Bitrate is poor</h3>";
@@ -345,13 +379,13 @@
 					document.getElementById("container").innerHTML += "<h3>Bitrate a bit low</h3>";
 				} 
 				else {
-					document.getElementById("container").innerHTML += "<h3>Bitrate is good</h3>";
+					document.getElementById("container").innerHTML += "<h3>Bitrate is <span style='color:#60ff60'>good<span></h3>";
 				}
 				
 				document.getElementById("container").innerHTML += "<br />The average video buffer length was: "+parseInt(BUFF/BUFFCCC)+"-ms<br />";
 				
 				if (BUFF/BUFFCCC>500){
-					document.getElementById("container").innerHTML += "<h3>Video delay is really bad</h3><br />";
+					document.getElementById("container").innerHTML += "<h3>Video delay is really <span style='color:#fb4949'>bad<span></h3><br />";
 				}
 				else if (BUFF/BUFFCCC>200){
 					document.getElementById("container").innerHTML += "<h3>Video delay is poor</h3><br />";
@@ -360,22 +394,22 @@
 					document.getElementById("container").innerHTML += "<h3>Video delay is sub-optimal</h3><br />";
 				} 
 				else {
-					document.getElementById("container").innerHTML += "<h3>Video delay is good</h3><br />";
+					document.getElementById("container").innerHTML += "<h3>Video delay is <span style='color:#60ff60'>good<span></h3><br />";
 				}
 				
 				document.getElementById("container").innerHTML += "The average video packet loss was: "+(parseInt(PAK*1000/PAKCCC)/1000.0)+"%<br />";
 				
 				if (PAK/PAKCCC>3){
-					document.getElementById("container").innerHTML += "<h3>Packet loss is extremely bad; Must Fix This</h3>";
+					document.getElementById("container").innerHTML += "<h3>Packet loss is extremely <span style='color:#fb4949'>bad<span>; Must Fix This</h3>";
 				}
 				else if (PAK/PAKCCC>0.8){
-					document.getElementById("container").innerHTML += "<h3>Packet loss is quite bad; expect problems with audio and video</h3>";
+					document.getElementById("container").innerHTML += "<h3>Packet loss is quite <span style='color:#fb4949'>bad<span>; expect problems with audio and video</h3>";
 				}
 				else if (PAK/PAKCCC>.15){
 					document.getElementById("container").innerHTML += "<h3>Packet loss is a bit high; might be a testing-server issue though</h3>";
 				} 
 				else {
-					document.getElementById("container").innerHTML += "<h3>Packet loss is good</h3>";
+					document.getElementById("container").innerHTML += "<h3>Packet loss is <span style='color:#60ff60'>good<span></h3>";
 				}
 				
 				console.log(QLR_1, QLR_2, QLR_3);
@@ -388,6 +422,7 @@
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
+					document.getElementById("container").innerHTML = "";
 					process(myArr);
 				}
 			};
